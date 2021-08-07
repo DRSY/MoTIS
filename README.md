@@ -5,7 +5,8 @@
 2. support different vector indexing strategies(linear scan and KMeans are now implemented).
 
 # Install
-Simply do 'pod install' and then open the generated .xcworkspace project file in XCode.
+1. Download the two TorchScript model files into models folder.
+2. Simply do 'pod install' and then open the generated .xcworkspace project file in XCode.
 ```bash
 pod install
 ```
