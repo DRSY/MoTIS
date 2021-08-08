@@ -4,6 +4,9 @@
 1. text-to-image retrieval using semantic similarity search.
 2. support different vector indexing strategies(linear scan and KMeans are now implemented).
 
+# Screenshot
+![all](./all.png) ![search](./cats.png)
+
 # Install
 1. Download the two TorchScript model files into models folder.
 2. Simply do 'pod install' and then open the generated .xcworkspace project file in XCode.
