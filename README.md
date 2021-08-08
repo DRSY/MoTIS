@@ -5,7 +5,8 @@
 2. support different vector indexing strategies(linear scan and KMeans are now implemented).
 
 # Screenshot
-![all](./all.png){:height="50%" width="50%"} ![search](./cats.png){:height="50%" width="50%"}
++ All images in the gallery ![all](./all.png) 
++ Search with query **Three cats** ![search](./cats.png)
 
 # Install
 1. Download the two TorchScript model files into models folder.
