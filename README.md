@@ -16,11 +16,15 @@ pod install
 ```
 
 # Todo
++ Basic features
 - [x] Accessing to specified album or the whole photos
-- [x] OpenAI's CLIP model
++ Indexing strategies
 - [x] Linear indexing
 - [x] KMeans indexing
 - [ ] Ball-Tree indexing
 - [ ] Locality sensitive hashing indexing
++ Choices of semantic representation models
+- [x] OpenAI's CLIP model
 - [ ] Integration of other multimodal retrieval models
++ Effiency
 - [ ] Reducing memory consumption of models
