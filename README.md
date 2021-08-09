@@ -20,6 +20,7 @@ pod install
 - [x] OpenAI's CLIP model
 - [x] Linear indexing
 - [x] KMeans indexing
+- [ ] Ball-Tree indexing
 - [ ] Locality sensitive hashing indexing
 - [ ] Integration of other multimodal retrieval models
 - [ ] Reducing memory consumption of models
