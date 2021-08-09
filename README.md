@@ -9,7 +9,7 @@
 + Search with query **Three cats** ![search](./cats.png)
 
 # Install
-1. Download the two TorchScript model files(![text encoder](https://drive.google.com/file/d/1583IT_K9cCkeHfrmuTpMbImbS5qB8SA1/view?usp=sharing)) into models folder.
+1. Download the two TorchScript model files([text encoder](https://drive.google.com/file/d/1583IT_K9cCkeHfrmuTpMbImbS5qB8SA1/view?usp=sharing), [image encoder](https://drive.google.com/file/d/1K2wIyTuSWLTKBXzUlyTEsa4xXLNDuI7P/view?usp=sharing)) into models folder.
 2. Simply do 'pod install' and then open the generated .xcworkspace project file in XCode.
 ```bash
 pod install
