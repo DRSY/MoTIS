@@ -18,9 +18,10 @@ pod install
 # Todo
 + Basic features
 - [x] Accessing to specified album or the whole photos
+- [x] Asynchronous model loading and vectors computation
 + Indexing strategies
-- [x] Linear indexing
-- [x] KMeans indexing
+- [x] Linear indexing(persisted to file via built-in Data type)
+- [x] KMeans indexing(persisted to file via NSMutableDictionary)
 - [ ] Ball-Tree indexing
 - [ ] Locality sensitive hashing indexing
 + Choices of semantic representation models
