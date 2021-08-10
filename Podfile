@@ -7,4 +7,5 @@ target 'Gallery' do
   pod 'CrossroadRegex'
   pod 'JMUnidecode-Swift'
   pod 'HTMLEntities', :git => 'https://github.com/Kitura/swift-html-entities.git'
+  pod 'Cereal', '~> 4.0'
 end

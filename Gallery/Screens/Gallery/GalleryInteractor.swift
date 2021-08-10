@@ -10,7 +10,7 @@ import Photos
 import AVFoundation
 import UIKit
 import Accelerate
-
+import Cereal
 
 protocol GalleryInteractorInput {
     var photos: [Photo] { get }
@@ -35,6 +35,8 @@ final class GalleryInteractor {
     var localImages: [UIImage] = []
     var showedImages: [UIImage] = []
     var vectors: [[Float]] = []
+    var double_vectors: [[Double]] = []
+
     var flat_vectors: [Float] = []
     let n = vDSP_Length(512)
     let stride = vDSP_Stride(1)
@@ -128,10 +130,10 @@ extension GalleryInteractor: GalleryInteractorInput {
         self.showedImages = self.localImages
         isLoading = false
         self.presenter.didUpdatePhotos()
+        
         DispatchQueue.global(qos: .userInitiated).async {
           // Do some time consuming task in this background thread
           // Mobile app will remain to be responsive to user actions
-          print("Performing time consuming task in this background thread")
             self.CLIPTextmodule = {
                 if let filePath = Bundle.main.path(forResource: "text", ofType: "pt"),
                     let module = CLIPNLPTorchModule(fileAtPath: filePath) {
@@ -150,23 +152,60 @@ extension GalleryInteractor: GalleryInteractorInput {
                     fatalError("Failed to load clip image model!")
                 }
             }()
-            let vec = self.localImages.map{
-                (self.CLIPImagemodule!.test_uiimagetomat(image:$0)) }
-            for nsarray in vec {
-                self.vectors.append(nsarray! as! [Float])
-//                let tmp_vec = nsarray! as! [Double]
-    //            KMeans.sharedInstance.addVector(tmp_vec)
+            //check if index file exists
+            let fileManager = FileManager.default
+            let filePath:String = NSHomeDirectory() + "/Documents/kmeans.plist"
+            let vec_filePath:String = NSHomeDirectory() + "/Documents/vectors.plist"
+            let exist = fileManager.fileExists(atPath: filePath)
+            let vec_exist = fileManager.fileExists(atPath: vec_filePath)
+            if exist == true && vec_exist == true{
+                var dictionary:NSMutableDictionary = [:]
+                dictionary = NSMutableDictionary(contentsOfFile: filePath)!
+                // de-serialize images' vectors
+                let N = dictionary["N"] as! Int
+                let vectors_data: Data = try! Data(contentsOf: URL(fileURLWithPath: vec_filePath))
+                var decoder = try! CerealDecoder(data: vectors_data)
+                for i in 0..<N {
+                    self.double_vectors.append(try! decoder.decode(key: String(i))!)
+                }
+                // restore KMeans index's metadata, including:
+                KMeans.sharedInstance.vectors = self.double_vectors
+                KMeans.sharedInstance.clusteringNumber = dictionary["K"] as! Int
+                KMeans.sharedInstance.finalClusters = dictionary["clusters"] as! [[Int]]
+                KMeans.sharedInstance.finalCentroids = dictionary["centroids"] as! [[Double]]
+            }else {
+                var encoder = CerealEncoder()
+                let vec = self.localImages.map{
+                    (self.CLIPImagemodule!.test_uiimagetomat(image:$0)) }
+                for id in 0..<vec.count {
+                    self.vectors.append(vec[id]! as! [Float])
+                    let tmp_vec = vec[id]! as! [Double]
+                    KMeans.sharedInstance.addVector(tmp_vec)
+                    try! encoder.encode(tmp_vec, forKey: String(id))
+                }
+                let data = encoder.toData()
+                try! data.write(to: URL(fileURLWithPath: vec_filePath))
+                // indexing using KMeans
+                KMeans.sharedInstance.clusteringNumber = 4
+                KMeans.sharedInstance.dimension = 512
+                KMeans.sharedInstance.clustering(5)
+                var dictionary:NSMutableDictionary = [:]
+                dictionary["N"] = self.localImages.count
+                dictionary["centroids"] = KMeans.sharedInstance.finalCentroids
+                dictionary["clusters"] = KMeans.sharedInstance.finalClusters
+                dictionary["K"] = KMeans.sharedInstance.clusteringNumber
+                dictionary.write(toFile: filePath, atomically: true)
+                self.double_vectors = KMeans.sharedInstance.vectors
             }
             self.isVectorReady = true
          DispatchQueue.main.async {
-              print("Time consuming task has completed. From here we are allowed to update user interface.")
+            // TODO
+//            let monitor: SampleClass = SampleClass()
+//            print("available memory(MB):", monitor.availableMemory())
+//            print("used memory(MB):", monitor.usedMemory())
+            print("back to main queue")
           }
       }
-        // indexing using KMeans
-//        KMeans.sharedInstance.reset()
-//        KMeans.sharedInstance.clusteringNumber = 5
-//        KMeans.sharedInstance.dimension = 512
-//        KMeans.sharedInstance.clustering(6)
     }
     
     func getSearchPhotos(by text: String) {
@@ -179,53 +218,44 @@ extension GalleryInteractor: GalleryInteractorInput {
         }
         let token_ids = self.tokenizer.tokenize(text: text)
         let res = self.CLIPTextmodule!.encode(text: token_ids)
-        let vector: [Float] = res! as! [Float]
+        let vector: [Double] = res! as! [Double]
         // Mark: K-Means
-//        let f_vector: [Float] = res as! [Float]
-//        var centroid_scores: [Double] = []
-//        var max_centroid_id: Int = -1
-//        var max_centroids_score: Double = .nan
-//        for idx in 0..<KMeans.sharedInstance.finalCentroids.count {
-//            let centroid = KMeans.sharedInstance.finalCentroids[idx]
-//            var sim_score: Double = .nan
-//            vDSP_dotprD(vector, self.stride, centroid, self.stride, &sim_score, self.n)
-//            centroid_scores.append(sim_score)
-//            if max_centroids_score.isNaN || sim_score > max_centroids_score {
-//                max_centroids_score = sim_score
-//                max_centroid_id = idx
-//            }
-//        }
-//        var final_sim_scores: [(score: Float, id: Int)] = []
-//        for vec_id in KMeans.sharedInstance.finalClusters[max_centroid_id] {
-//            var sim_score: Float = .nan
+        let f_vector: [Float] = res as! [Float]
+        var max_centroid_id: Int = -1
+        var max_centroids_score: Double = .nan
+        for idx in 0..<KMeans.sharedInstance.finalCentroids.count {
+            let centroid = KMeans.sharedInstance.finalCentroids[idx]
+            var sim_score: Double = .nan
+            vDSP_dotprD(vector, self.stride, centroid, self.stride, &sim_score, self.n)
+            if max_centroids_score.isNaN || sim_score > max_centroids_score {
+                max_centroids_score = sim_score
+                max_centroid_id = idx
+            }
+        }
+        var final_sim_scores: [(score: Double, id: Int)] = []
+        for vec_id in KMeans.sharedInstance.finalClusters[max_centroid_id] {
+            var sim_score: Double = .nan
+            vDSP_dotprD(vector, self.stride, self.double_vectors[vec_id], self.stride, &sim_score, self.n)
 //            vDSP_dotpr(f_vector, self.stride, self.vectors[vec_id], self.stride, &sim_score, self.n)
-//            final_sim_scores.append((sim_score, vec_id))
-//        }
-//        final_sim_scores.sort { $0.score > $1.score } // sort in descending order by sim_score
-//        self.showedImages = []
-//        var prev_diff: Float = 0.0
-//        self.showedImages.append(self.localImages[final_sim_scores[0].id])
-//        for idx in 1..<final_sim_scores.count {
-//            var score_diff = final_sim_scores[idx-1].score - final_sim_scores[idx].score
-//            if score_diff >= prev_diff / 3 {
-//                self.showedImages.append(self.localImages[final_sim_scores[idx].id])
-//                prev_diff = score_diff
-//            }else {
-//                break
-//            }
-//        }
-        // Mark: Linear scan
-        var sim_scores: [(score: Float, id: Int)] = []
-        for idx in 0..<self.vectors.count {
-            var sim_score: Float = .nan
-            vDSP_dotpr(vector, self.stride, self.vectors[idx], self.stride, &sim_score, self.n)
-            sim_scores.append((sim_score, idx))
+            final_sim_scores.append((sim_score, vec_id))
         }
-        sim_scores.sort { $0.score > $1.score }
+        final_sim_scores.sort { $0.score > $1.score } // sort in descending order by sim_score
         self.showedImages = []
-        for i in 0...2 {
-            self.showedImages.append(self.localImages[sim_scores[i].id])
+        for i in 0..<final_sim_scores.count {
+            self.showedImages.append(self.localImages[final_sim_scores[i].id])
         }
+        // Mark: Linear scan
+//        var sim_scores: [(score: Float, id: Int)] = []
+//        for idx in 0..<self.vectors.count {
+//            var sim_score: Float = .nan
+//            vDSP_dotpr(vector, self.stride, self.vectors[idx], self.stride, &sim_score, self.n)
+//            sim_scores.append((sim_score, idx))
+//        }
+//        sim_scores.sort { $0.score > $1.score }
+//        self.showedImages = []
+//        for i in 0...2 {
+//            self.showedImages.append(self.localImages[sim_scores[i].id])
+//        }
         presenter.didUpdatePhotos()
         self.isLoading = false
     }

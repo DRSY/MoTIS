@@ -12,6 +12,11 @@
 #import <UIKit/UIKit.h>
 
 NS_ASSUME_NONNULL_BEGIN
+@interface SampleClass:NSObject
+/* method declaration */
+- (double)availableMemory;
+- (double)usedMemory;
+@end
 
 @interface TorchModule : NSObject
 
