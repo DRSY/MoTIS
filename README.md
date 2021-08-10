@@ -1,4 +1,5 @@
 # A Mobile Text-to-Image Search Powered by AI
+A minimal demo demonstrating semantic multimodal text-to-image search using pretrained vision-language models.
 
 # Features
 1. text-to-image retrieval using semantic similarity search.
