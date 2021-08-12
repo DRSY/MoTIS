@@ -31,3 +31,6 @@ pod install
 - [ ] Integration of other multimodal retrieval models
 + Effiency
 - [ ] Reducing memory consumption of models
+
+# About us
+This project is maintained by [ADAPT](http://adapt.seiee.sjtu.edu.cn/) lab from Shang Hai Jiao Tong University. We expect it to continually integrate more advanced features and better cross-modla search experience.
