@@ -21,6 +21,9 @@ pod install
 + Basic features
 - [x] Accessing to specified album or the whole photos
 - [x] Asynchronous model loading and vectors computation
+- [x] Export pretrinaed CLIP into TorchScript format using torch.jit.script and optimize_for_mobile provided by Pytorch
+- [x] Transplant the original PIL based image preprocessing procedure into OpenCV based procedure, observed about 1% retrieval performance degradation
+- [x] Transplant the CLIP tokenizer from Python into Swift(Tokenizer.swift) 
 + Indexing strategies
 - [x] Linear indexing(persisted to file via built-in Data type)
 - [x] KMeans indexing(persisted to file via NSMutableDictionary, hard-coded num of clusters, u can change to whatever u want)
