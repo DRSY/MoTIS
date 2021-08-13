@@ -1,5 +1,5 @@
 # A Mobile Text-to-Image Search Powered by AI
-A minimal demo demonstrating semantic multimodal text-to-image search using pretrained vision-language models.
+A minimal demo demonstrating semantic multimodal text-to-image search using pretrained vision-language models. Semantic search represents each sample(text and image) as a vector in a shared semantic embedding space. The relevance score can then be measured as similarity(cosine similarity or distance) between vectors.
 
 # Features
 1. text-to-image retrieval using semantic similarity search.
@@ -23,7 +23,7 @@ pod install
 - [x] Asynchronous model loading and vectors computation
 + Indexing strategies
 - [x] Linear indexing(persisted to file via built-in Data type)
-- [x] KMeans indexing(persisted to file via NSMutableDictionary)
+- [x] KMeans indexing(persisted to file via NSMutableDictionary, hard-coded num of clusters, u can change to whatever u want)
 - [ ] Ball-Tree indexing
 - [ ] Locality sensitive hashing indexing
 + Choices of semantic representation models
