@@ -86,7 +86,7 @@ final class GalleryInteractor {
 extension GalleryInteractor: GalleryInteractorInput {
     
     func getPhotos() {
-        let albumName = "test"
+        let albumName = "Test2"
         var assetCollection = PHAssetCollection()
         var albumFound = Bool()
         var photoAssets = PHFetchResult<AnyObject>()
@@ -114,25 +114,53 @@ extension GalleryInteractor: GalleryInteractorInput {
         isLoading = true
         // print("Found \(assetResults.count) results")
         let imageManager = PHCachingImageManager()
-        assetResults.enumerateObjects{(object: AnyObject, count: Int, stop: UnsafeMutablePointer<ObjCBool>) in
+        var flags: Array<Bool> = []
+        var done = false
+        assetResults.enumerateObjects{ [self](object: AnyObject, count: Int, stop: UnsafeMutablePointer<ObjCBool>) in
             if object is PHAsset {
                 let asset = object as! PHAsset
                 let imageSize = CGSize(width: asset.pixelWidth,height: asset.pixelHeight)
                 /* For faster performance, and maybe degraded image */
                 let options = PHImageRequestOptions()
-                options.deliveryMode = .highQualityFormat
-                options.isSynchronous = true
-                imageManager.requestImage(for: asset, targetSize: imageSize, contentMode: PHImageContentMode.aspectFit, options: options, resultHandler: { (image: UIImage?, info:[AnyHashable:Any]?) in
+                options.deliveryMode = .fastFormat
+                options.isSynchronous = false
+//                imageManager.requestImage(for: asset, targetSize: imageSize, contentMode: PHImageContentMode.aspectFit, options: options, resultHandler: { (image: UIImage?, info:[AnyHashable:Any]?) in
+//                    self.localImages.append(image!)
+//                })
+                flags.append(false)
+                let idx = flags.count-1
+                if count == assetResults.count-1 {
+                    done = true
+                }
+                imageManager.requestImage(for: asset, targetSize: imageSize, contentMode: .default, options: options, resultHandler: { (image: UIImage?, info:[AnyHashable:Any]?) in
                     self.localImages.append(image!)
+                    flags[idx] = true
                 })
             }
         }
-        self.showedImages = self.localImages
-        isLoading = false
-        self.presenter.didUpdatePhotos()
+//        self.showedImages = self.localImages
+//        isLoading = false
+//        self.presenter.didUpdatePhotos()
         
         DispatchQueue.global(qos: .userInitiated).async {
           // Do some time consuming task in this background thread
+            while true {
+                if done == true {
+                    var exit_ = true;
+                    for idx in 0..<flags.count {
+                        if flags[idx] == false {
+                            exit_ = false
+                            break
+                        }
+                    }
+                    if exit_ == true {break}
+                }
+            }
+            DispatchQueue.main.async {
+                self.showedImages = self.localImages
+                self.isLoading = false
+                self.presenter.didUpdatePhotos()
+             }
           // Mobile app will remain to be responsive to user actions
             self.CLIPTextmodule = {
                 if let filePath = Bundle.main.path(forResource: "text", ofType: "pt"),
@@ -161,7 +189,7 @@ extension GalleryInteractor: GalleryInteractorInput {
             if exist == true && vec_exist == true{
                 var dictionary:NSMutableDictionary = [:]
                 dictionary = NSMutableDictionary(contentsOfFile: filePath)!
-                // de-serialize images' vectors
+//                 de-serialize images' vectors
                 let N = dictionary["N"] as! Int
                 let vectors_data: Data = try! Data(contentsOf: URL(fileURLWithPath: vec_filePath))
                 var decoder = try! CerealDecoder(data: vectors_data)
@@ -198,13 +226,6 @@ extension GalleryInteractor: GalleryInteractorInput {
                 self.double_vectors = KMeans.sharedInstance.vectors
             }
             self.isVectorReady = true
-         DispatchQueue.main.async {
-            // TODO
-//            let monitor: SampleClass = SampleClass()
-//            print("available memory(MB):", monitor.availableMemory())
-//            print("used memory(MB):", monitor.usedMemory())
-            print("back to main queue")
-          }
       }
     }
     
