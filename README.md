@@ -7,7 +7,7 @@ A minimal demo demonstrating semantic multimodal text-to-image search using pret
 
 # Features
 1. text-to-image retrieval using semantic similarity search.
-2. support different vector indexing strategies(linear scan and KMeans are now implemented).
+2. support different vector indexing strategies(linear scan, KMeans, and random projection).
 
 # Screenshot
 + All images in the gallery ![all](./all.png) 
