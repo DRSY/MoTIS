@@ -31,7 +31,7 @@ pod install
 + Indexing strategies
 - [x] Linear indexing(persisted to file via built-in Data type)
 - [x] KMeans indexing(persisted to file via NSMutableDictionary, hard-coded num of clusters, u can change to whatever u want)
-- [x] Spotify's [Annoy](https://github.com/spotify/annoy) libraby.
+- [x] Spotify's [Annoy](https://github.com/spotify/annoy) libraby with random projection indexing.
 + Choices of semantic representation models
 - [x] OpenAI's CLIP model
 - [ ] Integration of other multimodal retrieval models
