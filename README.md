@@ -1,6 +1,10 @@
 # A Mobile Text-to-Image Search Powered by AI
 A minimal demo demonstrating semantic multimodal text-to-image search using pretrained vision-language models. Semantic search represents each sample(text and image) as a vector in a shared semantic embedding space. The relevance score can then be measured as similarity(cosine similarity or distance) between vectors.
 
+# News!
+1. Transplanted [Annoy](https://github.com/spotify/annoy) Approximate Nearest Neighbor search in this project.
+2. Experiment of distilling CLIP ViT-32/B(350+MB) into a much smaller one(40MB+) is on going.
+
 # Features
 1. text-to-image retrieval using semantic similarity search.
 2. support different vector indexing strategies(linear scan and KMeans are now implemented).
@@ -27,8 +31,7 @@ pod install
 + Indexing strategies
 - [x] Linear indexing(persisted to file via built-in Data type)
 - [x] KMeans indexing(persisted to file via NSMutableDictionary, hard-coded num of clusters, u can change to whatever u want)
-- [ ] Ball-Tree indexing
-- [ ] Locality sensitive hashing indexing
+- [x] Spotify's [Annoy](https://github.com/spotify/annoy) libraby.
 + Choices of semantic representation models
 - [x] OpenAI's CLIP model
 - [ ] Integration of other multimodal retrieval models
