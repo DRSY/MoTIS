@@ -18,23 +18,22 @@ NS_ASSUME_NONNULL_BEGIN
 - (double)usedMemory;
 @end
 
+
 @interface TorchModule : NSObject
 
 - (nullable instancetype)initWithFileAtPath:(NSString*)filePath
     NS_SWIFT_NAME(init(fileAtPath:))NS_DESIGNATED_INITIALIZER;
+
+- (nullable instancetype)init NS_SWIFT_NAME(init())NS_DESIGNATED_INITIALIZER;
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;
 
 @end
 
-@interface VisionTorchModule : TorchModule
-- (nullable NSArray<NSNumber*>*)predictImage:(void*)imageBuffer NS_SWIFT_NAME(predict(image:));
-@end
+@interface IndexingModule : TorchModule
+- (nullable NSArray<NSNumber*>*)search:(NSArray<NSNumber*>*)query NS_SWIFT_NAME(search(query:));
+- (nullable NSArray<NSNumber*>*)buildIndex:(NSArray<NSArray<NSNumber*>*>*)datas NS_SWIFT_NAME(buildIndex(datas:));
 
-@interface NLPTorchModule : TorchModule
-- (nullable NSArray<NSString*>*)topics;
-- (nullable NSArray<NSNumber*>*)test;
-- (nullable NSArray<NSNumber*>*)predictText:(NSString*)text NS_SWIFT_NAME(predict(text:));
 @end
 
 @interface CLIPNLPTorchModule : TorchModule
@@ -45,6 +44,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface CLIPImageTorchModule : TorchModule
 - (nullable NSArray<NSNumber*>*)test_uiimagetomat:(UIImage*)image NS_SWIFT_NAME(test_uiimagetomat(image:));
+- (nullable NSArray<NSArray<NSNumber*>*>*)encode_images:(NSArray<UIImage*>*)images NS_SWIFT_NAME(encode_images(images:));
 - (nullable NSArray<NSNumber*>*)test:(NSString*)filePath NS_SWIFT_NAME(test(path:));
 - (nullable NSArray<NSNumber*>*)encode:(void*)imageBuffer NS_SWIFT_NAME(encode(image:));
 @end

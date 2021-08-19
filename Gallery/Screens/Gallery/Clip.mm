@@ -14,7 +14,11 @@
 #import "Clip.h"
 #import <sys/sysctl.h>
 #import <mach/mach.h>
+#import "annoylib.h"
+#import "kissrandom.h"
 
+
+using namespace Annoy;
 
 // 获取当前设备可用内存(单位：MB）
 
@@ -56,12 +60,13 @@
 
 const double mean_[3] = {0.48145466, 0.4578275, 0.40821073};
 const double std_[3] = {0.26862954, 0.26130258, 0.27577711};
+AnnoyIndex<int, float, DotProduct, Kiss32Random, AnnoyIndexMultiThreadedBuildPolicy> _index(512);
 
 @implementation TorchModule {
  @protected
   torch::jit::script::Module _impl;
+  
 }
-
 - (nullable instancetype)initWithFileAtPath:(NSString*)filePath {
   self = [super init];
   if (self) {
@@ -80,82 +85,69 @@ const double std_[3] = {0.26862954, 0.26130258, 0.27577711};
   return self;
 }
 
+- (nullable instancetype)init{
+    self = [super init];
+    if (self) {
+      try {
+        auto qengines = at::globalContext().supportedQEngines();
+        if (std::find(qengines.begin(), qengines.end(), at::QEngine::QNNPACK) != qengines.end()) {
+          at::globalContext().setQEngine(at::QEngine::QNNPACK);
+        }
+        NSFileManager *fm = [NSFileManager defaultManager];
+          if ([fm fileExistsAtPath:@"/tmp/tree"]) {
+              _index.load("/tmp/tree");
+              NSLog(@"Annoy index loaded");
+          }
+      } catch (const std::exception& exception) {
+        NSLog(@"%s", exception.what());
+        return nil;
+      }
+    }
+    return self;
+}
 @end
 
-@implementation VisionTorchModule
 
-- (NSArray<NSNumber*>*)predictImage:(void*)imageBuffer {
-  try {
-    at::Tensor tensor = torch::from_blob(imageBuffer, {1, 3, 224, 224}, at::kFloat);
-    torch::autograd::AutoGradMode guard(false);
-    at::AutoNonVariableTypeMode non_var_type_mode(true);
-    auto outputTensor = _impl.forward({tensor}).toTensor();
-    float* floatBuffer = outputTensor.data_ptr<float>();
-    if (!floatBuffer) {
-      return nil;
+
+@implementation IndexingModule
+- (nullable NSArray<NSNumber*>*)search:(NSArray<NSNumber*>*)query {
+    float *query_vector = new float[512];
+    int i=0;
+    for(NSNumber *number in query) {
+        query_vector[i++] = [number floatValue];
     }
+    std::vector<int> results_ids;
+    _index.get_nns_by_vector(query_vector, 3, -1, &results_ids, nullptr);
     NSMutableArray* results = [[NSMutableArray alloc] init];
-    for (int i = 0; i < 1000; i++) {
-      [results addObject:@(floatBuffer[i])];
+    for (int i = 0; i < results_ids.size(); i++) {
+      [results addObject:@(results_ids[i])];
     }
     return [results copy];
-  } catch (const std::exception& exception) {
-    NSLog(@"%s", exception.what());
-  }
-  return nil;
 }
 
+- (nullable NSArray<NSNumber*>*)buildIndex:(NSArray<NSArray<NSNumber*>*>*)datas {
+    int j=0;
+    for(NSArray<NSNumber*> *array in datas) {
+        float *data = new float[512];
+        int i = 0;
+        for(NSNumber *number in array) {
+            data[i++] = [number floatValue];
+        }
+        _index.add_item(j, data);
+        j++;
+    }
+    _index.build(512*2);
+    NSData *data = [[NSData alloc] initWithBytes:_index._nodes length:(_index._s*_index._n_nodes)];
+    NSError *error = nil;
+    BOOL saved =  [data writeToFile:@"/tmp/tree" options:NSDataWritingAtomic error:&error];
+    std::cout<<"Index built and saved:" << saved << "\n";
+    return nil;
+}
 @end
 
-@implementation NLPTorchModule
 
-- (NSArray<NSNumber*>*)predictText:(NSString*)text {
-  try {
-    const char* buffer = text.UTF8String;
-    torch::autograd::AutoGradMode guard(false);
-    at::AutoNonVariableTypeMode non_var_type_mode(true);
-    at::Tensor tensor = torch::from_blob((void*)buffer, {1, (int64_t)(strlen(buffer))}, at::kByte);
-    auto outputTensor = _impl.forward({tensor}).toTensor();
-    //NSLog(@"Num of classes: %lld", outputTensor.sizes()[1]);
-    float* floatBuffer = outputTensor.data_ptr<float>();
-    if (!floatBuffer) {
-      return nil;
-    }
-    NSMutableArray* results = [[NSMutableArray alloc] init];
-    for (int i = 0; i < 16; i++) {
-      [results addObject:@(floatBuffer[i])];
-    }
-    return [results copy];
-  } catch (const std::exception& exception) {
-    NSLog(@"%s", exception.what());
-  }
-  return nil;
-}
-
-- (NSArray<NSString*>*)topics {
-  try {
-    auto genericList = _impl.run_method("get_classes").toList();
-    NSMutableArray<NSString*>* topics = [NSMutableArray<NSString*> new];
-    for (int i = 0; i < genericList.size(); i++) {
-      std::string topic = genericList.get(i).toString()->string();
-      [topics addObject:[NSString stringWithCString:topic.c_str() encoding:NSUTF8StringEncoding]];
-    }
-    return [topics copy];
-  } catch (const std::exception& exception) {
-    NSLog(@"%s", exception.what());
-  }
-  return nil;
-}
-
-- (NSArray<NSString*>*)test {
-    NSLog(@"this is the test function being calling");
-  return nil;
-}
-
-@end
 
 @implementation CLIPNLPTorchModule
-
 - (NSArray<NSString*>*)test {
     
     NSLog(@"this is the test function of CLIPNLP module being calling hahahah");
@@ -172,6 +164,19 @@ const double std_[3] = {0.26862954, 0.26130258, 0.27577711};
     at::Tensor tensor = torch::from_blob((void*)token_ids, {1, 77}, at::kLong);
     auto outputTensor = _impl.forward({tensor}).toTensor();
     float* floatBuffer = outputTensor.data_ptr<float>();
+//    t.add_item(0, floatBuffer);
+//    t.build(2*512);
+//      std::vector<int> res;
+//      t.get_nns_by_item(0, 1, -1, &res, nullptr);
+//      std::cout<<"query results:\n";
+//      for(int i=0;i<res.size();++i)
+//      std::cout<<res[i]<<"\n";
+//      NSData *data = [[NSData alloc] initWithBytes:t._nodes length:(t._s*t._n_nodes)];
+//      BOOL bb =  [data writeToFile:@"/tmp/tree" options:NSDataWritingAtomic error:&error];
+//      std::cout<<bb;
+//      t.load("tree.tree");
+//      t.load("/tmp/tree");
+//      t.get_nns_by_vector(floatBuffer, 1, -1, &res, nullptr);
     if (!floatBuffer) {
       return nil;
     }
@@ -219,8 +224,13 @@ const double std_[3] = {0.26862954, 0.26130258, 0.27577711};
   return nil;
 }
 
+- (nullable NSArray<NSArray<NSNumber*>*>*)encode_images:(NSArray<UIImage*>*)images {
+    return nil;
+}
+
 
 - (NSArray<NSNumber*>*)test_uiimagetomat:(UIImage*)image {
+
     CGColorSpaceRef colorSpace = CGImageGetColorSpace(image.CGImage);
     CGFloat cols = image.size.width;
     CGFloat rows = image.size.height;

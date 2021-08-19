@@ -47,6 +47,8 @@ final class GalleryInteractor {
     var tokenizer = Tokenizer()
     
     private var CLIPTextmodule: CLIPNLPTorchModule? = nil
+    private var IndexModule: IndexingModule? = nil;
+
     
     private var CLIPImagemodule: CLIPImageTorchModule? = nil
     
@@ -119,48 +121,51 @@ extension GalleryInteractor: GalleryInteractorInput {
         assetResults.enumerateObjects{ [self](object: AnyObject, count: Int, stop: UnsafeMutablePointer<ObjCBool>) in
             if object is PHAsset {
                 let asset = object as! PHAsset
-                let imageSize = CGSize(width: asset.pixelWidth,height: asset.pixelHeight)
+//                let imageSize = CGSize(width: asset.pixelWidth,height: asset.pixelHeight)
+                let imageSize = CGSize(width: 224,height: 224)
+
+                print(imageSize)
                 /* For faster performance, and maybe degraded image */
                 let options = PHImageRequestOptions()
-                options.deliveryMode = .fastFormat
-                options.isSynchronous = false
-//                imageManager.requestImage(for: asset, targetSize: imageSize, contentMode: PHImageContentMode.aspectFit, options: options, resultHandler: { (image: UIImage?, info:[AnyHashable:Any]?) in
-//                    self.localImages.append(image!)
-//                })
+                options.deliveryMode = .highQualityFormat
+                options.isSynchronous = true
+                imageManager.requestImage(for: asset, targetSize: imageSize, contentMode: PHImageContentMode.aspectFit, options: options, resultHandler: { (image: UIImage?, info:[AnyHashable:Any]?) in
+                    self.localImages.append(image!)
+                })
                 flags.append(false)
                 let idx = flags.count-1
                 if count == assetResults.count-1 {
                     done = true
                 }
-                imageManager.requestImage(for: asset, targetSize: imageSize, contentMode: .default, options: options, resultHandler: { (image: UIImage?, info:[AnyHashable:Any]?) in
-                    self.localImages.append(image!)
-                    flags[idx] = true
-                })
+//                imageManager.requestImage(for: asset, targetSize: imageSize, contentMode: .default, options: options, resultHandler: { (image: UIImage?, info:[AnyHashable:Any]?) in
+//                    self.localImages.append(image!)
+//                    flags[idx] = true
+//                })
             }
         }
-//        self.showedImages = self.localImages
-//        isLoading = false
-//        self.presenter.didUpdatePhotos()
+        self.showedImages = self.localImages
+        isLoading = false
+        self.presenter.didUpdatePhotos()
         
         DispatchQueue.global(qos: .userInitiated).async {
           // Do some time consuming task in this background thread
-            while true {
-                if done == true {
-                    var exit_ = true;
-                    for idx in 0..<flags.count {
-                        if flags[idx] == false {
-                            exit_ = false
-                            break
-                        }
-                    }
-                    if exit_ == true {break}
-                }
-            }
-            DispatchQueue.main.async {
-                self.showedImages = self.localImages
-                self.isLoading = false
-                self.presenter.didUpdatePhotos()
-             }
+//            while true {
+//                if done == true {
+//                    var exit_ = true;
+//                    for idx in 0..<flags.count {
+//                        if flags[idx] == false {
+//                            exit_ = false
+//                            break
+//                        }
+//                    }
+//                    if exit_ == true {break}
+//                }
+//            }
+//            DispatchQueue.main.async {
+//                self.showedImages = self.localImages
+//                self.isLoading = false
+//                self.presenter.didUpdatePhotos()
+//             }
           // Mobile app will remain to be responsive to user actions
             self.CLIPTextmodule = {
                 if let filePath = Bundle.main.path(forResource: "text", ofType: "pt"),
@@ -171,22 +176,16 @@ extension GalleryInteractor: GalleryInteractorInput {
                     fatalError("Failed to load clip nlp model!")
                 }
             }()
-            self.CLIPImagemodule = {
-                if let filePath = Bundle.main.path(forResource: "image", ofType: "pt"),
-                    let module = CLIPImageTorchModule(fileAtPath: filePath) {
-                    NSLog("CLIP Image encoder loaded")
-                    return module
-                } else {
-                    fatalError("Failed to load clip image model!")
-                }
-            }()
+
             //check if index file exists
             let fileManager = FileManager.default
             let filePath:String = NSHomeDirectory() + "/Documents/kmeans.plist"
             let vec_filePath:String = NSHomeDirectory() + "/Documents/vectors.plist"
             let exist = fileManager.fileExists(atPath: filePath)
             let vec_exist = fileManager.fileExists(atPath: vec_filePath)
-            if exist == true && vec_exist == true{
+            let annoy_index_exist = fileManager.fileExists(atPath: "/tmp/tree")
+            if exist == true && vec_exist == true && annoy_index_exist{
+                self.IndexModule = IndexingModule()
                 var dictionary:NSMutableDictionary = [:]
                 dictionary = NSMutableDictionary(contentsOfFile: filePath)!
 //                 de-serialize images' vectors
@@ -202,17 +201,28 @@ extension GalleryInteractor: GalleryInteractorInput {
                 KMeans.sharedInstance.finalClusters = dictionary["clusters"] as! [[Int]]
                 KMeans.sharedInstance.finalCentroids = dictionary["centroids"] as! [[Double]]
             }else {
+                self.CLIPImagemodule = {
+                    if let filePath = Bundle.main.path(forResource: "image", ofType: "pt"),
+                        let module = CLIPImageTorchModule(fileAtPath: filePath) {
+                        NSLog("CLIP Image encoder loaded")
+                        return module
+                    } else {
+                        fatalError("Failed to load clip image model!")
+                    }
+                }()
+                self.IndexModule = IndexingModule()
                 var encoder = CerealEncoder()
                 let vec = self.localImages.map{
-                    (self.CLIPImagemodule!.test_uiimagetomat(image:$0)) }
+                    (self.CLIPImagemodule!.test_uiimagetomat(image:$0))! }
+                self.IndexModule?.buildIndex(datas: vec)
                 for id in 0..<vec.count {
-                    self.vectors.append(vec[id]! as! [Float])
-                    let tmp_vec = vec[id]! as! [Double]
+                    self.vectors.append(vec[id] as! [Float])
+                    let tmp_vec = vec[id] as! [Double]
                     KMeans.sharedInstance.addVector(tmp_vec)
                     try! encoder.encode(tmp_vec, forKey: String(id))
                 }
                 let data = encoder.toData()
-                try! data.write(to: URL(fileURLWithPath: vec_filePath))
+//                try! data.write(to: URL(fileURLWithPath: vec_filePath))
                 // indexing using KMeans
                 KMeans.sharedInstance.clusteringNumber = 4
                 KMeans.sharedInstance.dimension = 512
@@ -222,10 +232,11 @@ extension GalleryInteractor: GalleryInteractorInput {
                 dictionary["centroids"] = KMeans.sharedInstance.finalCentroids
                 dictionary["clusters"] = KMeans.sharedInstance.finalClusters
                 dictionary["K"] = KMeans.sharedInstance.clusteringNumber
-                dictionary.write(toFile: filePath, atomically: true)
+//                dictionary.write(toFile: filePath, atomically: true)
                 self.double_vectors = KMeans.sharedInstance.vectors
             }
             self.isVectorReady = true
+            print("done")
       }
     }
     
@@ -234,37 +245,43 @@ extension GalleryInteractor: GalleryInteractorInput {
         if text == "reset" || text == "Reset" {
             self.showedImages = self.localImages
             presenter.didUpdatePhotos()
+            
             isLoading = false
             return
         }
         let token_ids = self.tokenizer.tokenize(text: text)
         let res = self.CLIPTextmodule!.encode(text: token_ids)
-        let vector: [Double] = res! as! [Double]
-        // Mark: K-Means
-        let f_vector: [Float] = res as! [Float]
-        var max_centroid_id: Int = -1
-        var max_centroids_score: Double = .nan
-        for idx in 0..<KMeans.sharedInstance.finalCentroids.count {
-            let centroid = KMeans.sharedInstance.finalCentroids[idx]
-            var sim_score: Double = .nan
-            vDSP_dotprD(vector, self.stride, centroid, self.stride, &sim_score, self.n)
-            if max_centroids_score.isNaN || sim_score > max_centroids_score {
-                max_centroids_score = sim_score
-                max_centroid_id = idx
-            }
-        }
-        var final_sim_scores: [(score: Double, id: Int)] = []
-        for vec_id in KMeans.sharedInstance.finalClusters[max_centroid_id] {
-            var sim_score: Double = .nan
-            vDSP_dotprD(vector, self.stride, self.double_vectors[vec_id], self.stride, &sim_score, self.n)
-//            vDSP_dotpr(f_vector, self.stride, self.vectors[vec_id], self.stride, &sim_score, self.n)
-            final_sim_scores.append((sim_score, vec_id))
-        }
-        final_sim_scores.sort { $0.score > $1.score } // sort in descending order by sim_score
+        let results_ids = self.IndexModule?.search(query: res!)
         self.showedImages = []
-        for i in 0..<final_sim_scores.count {
-            self.showedImages.append(self.localImages[final_sim_scores[i].id])
+        for i in 0..<results_ids!.count {
+            self.showedImages.append(self.localImages[results_ids![i] as! Int])
         }
+//        let vector: [Double] = res! as! [Double]
+//        // Mark: K-Means
+//        let f_vector: [Float] = res as! [Float]
+//        var max_centroid_id: Int = -1
+//        var max_centroids_score: Double = .nan
+//        for idx in 0..<KMeans.sharedInstance.finalCentroids.count {
+//            let centroid = KMeans.sharedInstance.finalCentroids[idx]
+//            var sim_score: Double = .nan
+//            vDSP_dotprD(vector, self.stride, centroid, self.stride, &sim_score, self.n)
+//            if max_centroids_score.isNaN || sim_score > max_centroids_score {
+//                max_centroids_score = sim_score
+//                max_centroid_id = idx
+//            }
+//        }
+//        var final_sim_scores: [(score: Double, id: Int)] = []
+//        for vec_id in KMeans.sharedInstance.finalClusters[max_centroid_id] {
+//            var sim_score: Double = .nan
+//            vDSP_dotprD(vector, self.stride, self.double_vectors[vec_id], self.stride, &sim_score, self.n)
+////            vDSP_dotpr(f_vector, self.stride, self.vectors[vec_id], self.stride, &sim_score, self.n)
+//            final_sim_scores.append((sim_score, vec_id))
+//        }
+//        final_sim_scores.sort { $0.score > $1.score } // sort in descending order by sim_score
+
+//        for i in 0..<final_sim_scores.count {
+//            self.showedImages.append(self.localImages[final_sim_scores[i].id])
+//        }
         // Mark: Linear scan
 //        var sim_scores: [(score: Float, id: Int)] = []
 //        for idx in 0..<self.vectors.count {
