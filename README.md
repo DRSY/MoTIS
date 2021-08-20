@@ -39,4 +39,4 @@ pod install
 - [ ] Reducing memory consumption of models(ViT/B-32 version of CLIP takes about 605MB for storage and 1GB for runtime on iPhone)
 
 # About us
-This project is actively maintained by [ADAPT](http://adapt.seiee.sjtu.edu.cn/) lab from ShangHai Jiao Tong University. We expect it to continually integrate more advanced features and better cross-modal search experience.
+This project is actively maintained by [ADAPT](http://adapt.seiee.sjtu.edu.cn/) lab from Shanghai Jiao Tong University. We expect it to continually integrate more advanced features and better cross-modal search experience.
