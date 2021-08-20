@@ -1,7 +1,7 @@
 # A Mobile Text-to-Image Search Powered by AI
 A minimal demo demonstrating semantic multimodal text-to-image search using pretrained vision-language models. Semantic search represents each sample(text and image) as a vector in a shared semantic embedding space. The relevance score can then be measured as similarity(cosine similarity or distance) between vectors.
 
-# News!
+# Recent Updates:
 1. Transplanted Spotify's [Annoy](https://github.com/spotify/annoy) Approximate Nearest Neighbor search in this project(annoylib.h).
 2. Experiment of distilling [CLIP](https://github.com/openai/CLIP) ViT-32/B(350+MB) into a much smaller one(40MB+) is on going.
 
