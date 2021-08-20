@@ -3,7 +3,7 @@ A minimal demo demonstrating semantic multimodal text-to-image search using pret
 
 # News!
 1. Transplanted Spotify's [Annoy](https://github.com/spotify/annoy) Approximate Nearest Neighbor search in this project.
-2. Experiment of distilling CLIP ViT-32/B(350+MB) into a much smaller one(40MB+) is on going.
+2. Experiment of distilling [CLIP](https://github.com/openai/CLIP) ViT-32/B(350+MB) into a much smaller one(40MB+) is on going.
 
 # Features
 1. text-to-image retrieval using semantic similarity search.
