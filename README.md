@@ -14,7 +14,7 @@ A minimal demo demonstrating semantic multimodal text-to-image search using pret
 + Search with query **Three cats** ![search](./cats.png)
 
 # Install
-1. Download the two TorchScript model files([text encoder](https://drive.google.com/file/d/1583IT_K9cCkeHfrmuTpMbImbS5qB8SA1/view?usp=sharing), [image encoder](https://drive.google.com/file/d/1K2wIyTuSWLTKBXzUlyTEsa4xXLNDuI7P/view?usp=sharing)) into models folder and add them into the Xcode project.
+1. Download the two TorchScript model files([text encoder](https://drive.google.com/file/d/1583IT_K9cCkeHfrmuTpMbImbS5qB8SA1/view?usp=sharing), [image encoder](https://drive.google.com/file/d/1Miocgk0gxAf79pu51IX8kfR04iJM_TCm/view?usp=sharing)) into models folder and add them into the Xcode project.
 2. Required dependencies are defined in the Podfile. We use Cocapods to manage these dependencies. Simply do 'pod install' and then open the generated .xcworkspace project file in XCode.
 ```bash
 pod install
