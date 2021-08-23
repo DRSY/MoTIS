@@ -21,6 +21,9 @@ pod install
 ```
 3. This demo by default load all images in the local photo gallery on your realphone or simulator. One can change it to a specified album by setting the **albumName** variable in **getPhotos** method and replacing **assetResults** in line 117 of GalleryInteractor.swift with **photoAssets**.
 
+# Usage
+Just type any keyword in order to search the relecant images. Type "reset" to return to the default one.
+
 # Todos
 + Basic features
 - [x] Accessing to specified album or the whole photos
