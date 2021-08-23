@@ -3,7 +3,7 @@ A minimal demo demonstrating semantic multimodal text-to-image search using pret
 
 # Recent Updates:
 + Transplanted Spotify's [Annoy](https://github.com/spotify/annoy) Approximate Nearest Neighbor search in this project(annoylib.h).
-+ Experiment of distilling [CLIP](https://github.com/openai/CLIP) ViT-32/B(350+MB) into a much smaller one(40MB+) is on going.
++ A distilled ViT image encoder is provided [here](https://drive.google.com/file/d/1Miocgk0gxAf79pu51IX8kfR04iJM_TCm/view?usp=sharing), with a much smaller size of 48MB compared to the original 351MB one while retaining decent retrieval performance.
 
 # Features
 1. text-to-image retrieval using semantic similarity search.
