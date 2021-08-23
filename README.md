@@ -21,7 +21,7 @@ pod install
 ```
 3. This demo by default load all images in the local photo gallery on your realphone or simulator. One can change it to a specified album by setting the **albumName** variable in **getPhotos** method and replacing **assetResults** in line 117 of GalleryInteractor.swift with **photoAssets**.
 
-# Todo
+# Todos
 + Basic features
 - [x] Accessing to specified album or the whole photos
 - [x] Asynchronous model loading and vectors computation
@@ -38,5 +38,5 @@ pod install
 + Effiency
 - [x] Reducing memory consumption of models: runtime memory 1GB -> 490MB via a smaller yet effective distilled ViT model.
 
-# About us
+# About Us
 This project is actively maintained by [ADAPT](http://adapt.seiee.sjtu.edu.cn/) lab from Shanghai Jiao Tong University. We expect it to continually integrate more advanced features and better cross-modal search experience.
