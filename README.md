@@ -39,4 +39,4 @@ pod install
 - [x] Reducing memory consumption of models: runtime memory 1GB -> 490MB via a smaller yet effective distilled ViT model.
 
 # About Us
-This project is actively maintained by [ADAPT](http://adapt.seiee.sjtu.edu.cn/) lab from Shanghai Jiao Tong University. We expect it to continually integrate more advanced features and better cross-modal search experience.
+This project is actively maintained by [ADAPT](http://adapt.seiee.sjtu.edu.cn/) lab from Shanghai Jiao Tong University. We expect it to continually integrate more advanced features and better cross-modal search experience. If you have any problems, welcome to file an issue.
