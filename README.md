@@ -27,7 +27,7 @@ Just type any keyword in order to search the relecant images. Type "reset" to re
 
 # Todos
 + Basic features
-- [x] Accessing to specified album or the whole photos
+- [x] Access to specified album or all photos
 - [x] Asynchronous model loading and vectors computation
 - [x] Export pretrinaed CLIP into TorchScript format using **torch.jit.script** and **optimize_for_mobile** provided by Pytorch
 - [x] Transplant the original PIL based image preprocessing procedure into OpenCV based procedure, observed about 1% retrieval performance degradation
