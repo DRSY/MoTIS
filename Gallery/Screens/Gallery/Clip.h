@@ -33,6 +33,8 @@ NS_ASSUME_NONNULL_BEGIN
 @interface IndexingModule : TorchModule
 - (nullable NSArray<NSNumber*>*)search:(NSArray<NSNumber*>*)query NS_SWIFT_NAME(search(query:));
 - (nullable NSArray<NSNumber*>*)buildIndex:(NSArray<NSArray<NSNumber*>*>*)datas NS_SWIFT_NAME(buildIndex(datas:));
+- (nullable NSArray<NSNumber*>*)buildIndexOne:(NSArray<NSNumber*>*)data NS_SWIFT_NAME(buildIndexOne(data:));
+- (nullable NSArray<NSNumber*>*)save;
 
 @end
 

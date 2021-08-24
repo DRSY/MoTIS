@@ -105,67 +105,63 @@ extension GalleryInteractor: GalleryInteractorInput {
         else { albumFound = false }
         _ = collection.count
         photoAssets = PHAsset.fetchAssets(in: assetCollection, options: nil) as! PHFetchResult<AnyObject>
-        print(photoAssets.count)
         /* Retrieve the items in order of modification date, ascending */
         let options = PHFetchOptions()
         options.sortDescriptors = [NSSortDescriptor(key: "modificationDate", ascending: true)]
-        
-        /* Then get an object of type PHFetchResult that will contain
-         all our image assets */
         assetResults = PHAsset.fetchAssets(with: .image, options: options) as! PHFetchResult<AnyObject>
         isLoading = true
-        // print("Found \(assetResults.count) results")
         let imageManager = PHCachingImageManager()
         var flags: Array<Bool> = []
-        var done = false
+        var done: Bool = false
         assetResults.enumerateObjects{ [self](object: AnyObject, count: Int, stop: UnsafeMutablePointer<ObjCBool>) in
             if object is PHAsset {
                 let asset = object as! PHAsset
 //                let imageSize = CGSize(width: asset.pixelWidth,height: asset.pixelHeight)
-                let imageSize = CGSize(width: 224,height: 224)
+                let imageSize = CGSize(width: 22,height: 22)
 
-                print(imageSize)
                 /* For faster performance, and maybe degraded image */
                 let options = PHImageRequestOptions()
-                options.deliveryMode = .highQualityFormat
-                options.isSynchronous = true
-                imageManager.requestImage(for: asset, targetSize: imageSize, contentMode: PHImageContentMode.aspectFit, options: options, resultHandler: { (image: UIImage?, info:[AnyHashable:Any]?) in
-                    self.localImages.append(image!)
-                })
+                options.deliveryMode = .fastFormat
                 flags.append(false)
-                let idx = flags.count-1
-                if count == assetResults.count-1 {
+//                options.isSynchronous = true
+                if (count == assetResults.count-1) {
                     done = true
                 }
-//                imageManager.requestImage(for: asset, targetSize: imageSize, contentMode: .default, options: options, resultHandler: { (image: UIImage?, info:[AnyHashable:Any]?) in
-//                    self.localImages.append(image!)
-//                    flags[idx] = true
+                let idx: Int = flags.count-1
+//                imageManager.requestImage(for: asset, targetSize: imageSize, contentMode: PHImageContentMode.aspectFit, options: options, resultHandler: { (image: UIImage?, info:[AnyHashable:Any]?) in
+//                    self.showedImages.append(image!)
 //                })
+                imageManager.requestImage(for: asset, targetSize: imageSize, contentMode: .default, options: options, resultHandler: { (image: UIImage?, info:[AnyHashable:Any]?) in
+                    self.localImages.append(image!)
+                    flags[idx] = true
+                })
             }
         }
-        self.showedImages = self.localImages
-        isLoading = false
-        self.presenter.didUpdatePhotos()
+//        self.localImages = []
+//        self.showedImages = self.localImages
+//        self.isLoading = false
+//        self.presenter.didUpdatePhotos()
         
         DispatchQueue.global(qos: .userInitiated).async {
-          // Do some time consuming task in this background thread
-//            while true {
-//                if done == true {
-//                    var exit_ = true;
-//                    for idx in 0..<flags.count {
-//                        if flags[idx] == false {
-//                            exit_ = false
-//                            break
-//                        }
-//                    }
-//                    if exit_ == true {break}
-//                }
-//            }
-//            DispatchQueue.main.async {
-//                self.showedImages = self.localImages
-//                self.isLoading = false
-//                self.presenter.didUpdatePhotos()
-//             }
+            while done == false {}
+            while true {
+                var exit_:Bool = true
+                for val in flags {
+                    if (val==false) {
+                        exit_ = false
+                        break
+                    }
+                }
+                if(exit_==true) {
+                    break
+                }
+            }
+            DispatchQueue.main.async {
+
+                self.showedImages = self.localImages
+                self.isLoading = false
+                self.presenter.didUpdatePhotos()
+            }
           // Mobile app will remain to be responsive to user actions
             self.CLIPTextmodule = {
                 if let filePath = Bundle.main.path(forResource: "text", ofType: "pt"),
@@ -184,25 +180,28 @@ extension GalleryInteractor: GalleryInteractorInput {
             let exist = fileManager.fileExists(atPath: filePath)
             let vec_exist = fileManager.fileExists(atPath: vec_filePath)
             let annoy_index_exist = fileManager.fileExists(atPath: "/tmp/tree")
-            if exist == true && vec_exist == true && annoy_index_exist{
+            if exist == true && vec_exist == true && annoy_index_exist==true{
                 self.IndexModule = IndexingModule()
-                var dictionary:NSMutableDictionary = [:]
-                dictionary = NSMutableDictionary(contentsOfFile: filePath)!
+//                var dictionary:NSMutableDictionary = [:]
+//                dictionary = NSMutableDictionary(contentsOfFile: filePath)!
 //                 de-serialize images' vectors
-                let N = dictionary["N"] as! Int
-                let vectors_data: Data = try! Data(contentsOf: URL(fileURLWithPath: vec_filePath))
-                var decoder = try! CerealDecoder(data: vectors_data)
-                for i in 0..<N {
-                    self.double_vectors.append(try! decoder.decode(key: String(i))!)
-                }
+//                let N = dictionary["N"] as! Int
+//                let vectors_data: Data = try! Data(contentsOf: URL(fileURLWithPath: vec_filePath))
+//                var decoder = try! CerealDecoder(data: vectors_data)
+//                for i in 0..<N {
+//                    self.double_vectors.append(try! decoder.decode(key: String(i))!)
+//                }
                 // restore KMeans index's metadata, including:
-                KMeans.sharedInstance.vectors = self.double_vectors
-                KMeans.sharedInstance.clusteringNumber = dictionary["K"] as! Int
-                KMeans.sharedInstance.finalClusters = dictionary["clusters"] as! [[Int]]
-                KMeans.sharedInstance.finalCentroids = dictionary["centroids"] as! [[Double]]
+//                KMeans.sharedInstance.vectors = self.double_vectors
+//                KMeans.sharedInstance.clusteringNumber = dictionary["K"] as! Int
+//                KMeans.sharedInstance.finalClusters = dictionary["clusters"] as! [[Int]]
+//                KMeans.sharedInstance.finalCentroids = dictionary["centroids"] as! [[Double]]
             }else {
+                if(annoy_index_exist) {
+                    try! fileManager.removeItem(atPath: "/tmp/tree")
+                }
                 self.CLIPImagemodule = {
-                    if let filePath = Bundle.main.path(forResource: "image", ofType: "pt"),
+                    if let filePath = Bundle.main.path(forResource: "student_image", ofType: "pt"),
                         let module = CLIPImageTorchModule(fileAtPath: filePath) {
                         NSLog("CLIP Image encoder loaded")
                         return module
@@ -211,29 +210,45 @@ extension GalleryInteractor: GalleryInteractorInput {
                     }
                 }()
                 self.IndexModule = IndexingModule()
-                var encoder = CerealEncoder()
-                let vec = self.localImages.map{
-                    (self.CLIPImagemodule!.test_uiimagetomat(image:$0))! }
-                self.IndexModule?.buildIndex(datas: vec)
-                for id in 0..<vec.count {
-                    self.vectors.append(vec[id] as! [Float])
-                    let tmp_vec = vec[id] as! [Double]
-                    KMeans.sharedInstance.addVector(tmp_vec)
-                    try! encoder.encode(tmp_vec, forKey: String(id))
-                }
-                let data = encoder.toData()
+//                var encoder = CerealEncoder()
+                let imageSize = CGSize(width: 224,height: 224)
+                let options = PHImageRequestOptions()
+                options.deliveryMode = .highQualityFormat
+                options.isSynchronous = true
+                var image_vectors: Array<Array<Float>> = []
+                    self.assetResults.enumerateObjects{ [self](object: AnyObject, count: Int, stop: UnsafeMutablePointer<ObjCBool>) in
+                        if object is PHAsset {
+                            let asset = object as! PHAsset
+                            imageManager.requestImage(for: asset, targetSize: imageSize, contentMode: PHImageContentMode.aspectFit, options: options, resultHandler: { (image: UIImage?, info:[AnyHashable:Any]?) in
+                                image_vectors.append(self.CLIPImagemodule!.test_uiimagetomat(image: image!) as! Array<Float>)
+//                                self.IndexModule?.buildIndexOne(data: (self.CLIPImagemodule?.test_uiimagetomat(image: image!))!)
+                            })
+                        }
+                    }
+                self.IndexModule?.buildIndex(datas: image_vectors as! [[NSNumber]])
+//                self.IndexModule?.save()
+//                let vec = self.localImages.map{
+//                    (self.CLIPImagemodule!.test_uiimagetomat(image:$0))! }
+//                self.IndexModule?.buildIndex(datas: vec)
+//                for id in 0..<vec.count {
+//                    self.vectors.append(vec[id] as! [Float])
+//                    let tmp_vec = vec[id] as! [Double]
+//                    KMeans.sharedInstance.addVector(tmp_vec)
+//                    try! encoder.encode(tmp_vec, forKey: String(id))
+//                }
+//                let data = encoder.toData()
 //                try! data.write(to: URL(fileURLWithPath: vec_filePath))
                 // indexing using KMeans
-                KMeans.sharedInstance.clusteringNumber = 4
-                KMeans.sharedInstance.dimension = 512
-                KMeans.sharedInstance.clustering(5)
-                var dictionary:NSMutableDictionary = [:]
-                dictionary["N"] = self.localImages.count
-                dictionary["centroids"] = KMeans.sharedInstance.finalCentroids
-                dictionary["clusters"] = KMeans.sharedInstance.finalClusters
-                dictionary["K"] = KMeans.sharedInstance.clusteringNumber
+//                KMeans.sharedInstance.clusteringNumber = 4
+//                KMeans.sharedInstance.dimension = 512
+//                KMeans.sharedInstance.clustering(5)
+//                var dictionary:NSMutableDictionary = [:]
+//                dictionary["N"] = self.localImages.count
+//                dictionary["centroids"] = KMeans.sharedInstance.finalCentroids
+//                dictionary["clusters"] = KMeans.sharedInstance.finalClusters
+//                dictionary["K"] = KMeans.sharedInstance.clusteringNumber
 //                dictionary.write(toFile: filePath, atomically: true)
-                self.double_vectors = KMeans.sharedInstance.vectors
+//                self.double_vectors = KMeans.sharedInstance.vectors
             }
             self.isVectorReady = true
             print("done")
@@ -245,7 +260,6 @@ extension GalleryInteractor: GalleryInteractorInput {
         if text == "reset" || text == "Reset" {
             self.showedImages = self.localImages
             presenter.didUpdatePhotos()
-            
             isLoading = false
             return
         }
@@ -253,8 +267,15 @@ extension GalleryInteractor: GalleryInteractorInput {
         let res = self.CLIPTextmodule!.encode(text: token_ids)
         let results_ids = self.IndexModule?.search(query: res!)
         self.showedImages = []
+        let imageManager = PHCachingImageManager()
+        let imageSize = CGSize(width: 224,height: 224)
+        let options = PHImageRequestOptions()
+        options.deliveryMode = .highQualityFormat
+        options.isSynchronous = true
         for i in 0..<results_ids!.count {
-            self.showedImages.append(self.localImages[results_ids![i] as! Int])
+            imageManager.requestImage(for: self.assetResults[Int(results_ids![i])] as! PHAsset, targetSize: imageSize, contentMode: PHImageContentMode.aspectFit, options: options, resultHandler: { (image: UIImage?, info:[AnyHashable:Any]?) in
+                self.showedImages.append(image!)
+            })
         }
 //        let vector: [Double] = res! as! [Double]
 //        // Mark: K-Means

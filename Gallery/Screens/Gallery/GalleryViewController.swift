@@ -100,6 +100,7 @@ final class GalleryViewController: UIViewController {
     
     private func getMyGroup() -> NSCollectionLayoutGroup {
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.3), heightDimension: .fractionalWidth(0.3))
+        print(itemSize)
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
         item.contentInsets = .init(top: 1, leading: 1, bottom: 1, trailing: 1)
         let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.3))

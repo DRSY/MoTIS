@@ -117,12 +117,32 @@ AnnoyIndex<int, float, DotProduct, Kiss32Random, AnnoyIndexMultiThreadedBuildPol
         query_vector[i++] = [number floatValue];
     }
     std::vector<int> results_ids;
-    _index.get_nns_by_vector(query_vector, 3, -1, &results_ids, nullptr);
+    _index.get_nns_by_vector(query_vector, 5, -1, &results_ids, nullptr);
     NSMutableArray* results = [[NSMutableArray alloc] init];
     for (int i = 0; i < results_ids.size(); i++) {
       [results addObject:@(results_ids[i])];
     }
     return [results copy];
+}
+
+- (nullable NSArray<NSNumber*>*)buildIndexOne:(NSArray<NSNumber*>*)data {
+    float *data_ = new float[512];
+    int i=0;
+    for(NSNumber *number in data) {
+        data_[i++] = [number floatValue];
+    }
+    _index.add_item(_index._n_items, data_);
+    delete[] data_;
+    return NULL;
+}
+
+- (nullable NSArray<NSNumber*>*)save {
+    _index.build(512*2);
+    NSData *data = [[NSData alloc] initWithBytes:_index._nodes length:(_index._s*_index._n_nodes)];
+    NSError *error = nil;
+    BOOL saved =  [data writeToFile:@"/tmp/tree" options:NSDataWritingAtomic error:&error];
+    std::cout<<"Index with " << _index._n_items << " samples built and saved:" << saved << "\n";
+    return NULL;
 }
 
 - (nullable NSArray<NSNumber*>*)buildIndex:(NSArray<NSArray<NSNumber*>*>*)datas {
@@ -134,13 +154,14 @@ AnnoyIndex<int, float, DotProduct, Kiss32Random, AnnoyIndexMultiThreadedBuildPol
             data[i++] = [number floatValue];
         }
         _index.add_item(j, data);
+        delete[] data;
         j++;
     }
     _index.build(512*2);
     NSData *data = [[NSData alloc] initWithBytes:_index._nodes length:(_index._s*_index._n_nodes)];
     NSError *error = nil;
     BOOL saved =  [data writeToFile:@"/tmp/tree" options:NSDataWritingAtomic error:&error];
-    std::cout<<"Index built and saved:" << saved << "\n";
+    std::cout<<"Index with " << _index._n_items << " samples built and saved:" << saved << "\n";
     return nil;
 }
 @end
