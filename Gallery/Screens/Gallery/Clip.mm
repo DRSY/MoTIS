@@ -117,7 +117,7 @@ AnnoyIndex<int, float, DotProduct, Kiss32Random, AnnoyIndexMultiThreadedBuildPol
         query_vector[i++] = [number floatValue];
     }
     std::vector<int> results_ids;
-    _index.get_nns_by_vector(query_vector, 5, -1, &results_ids, nullptr);
+    _index.get_nns_by_vector(query_vector, 10, -1, &results_ids, nullptr);
     NSMutableArray* results = [[NSMutableArray alloc] init];
     for (int i = 0; i < results_ids.size(); i++) {
       [results addObject:@(results_ids[i])];
@@ -251,7 +251,8 @@ AnnoyIndex<int, float, DotProduct, Kiss32Random, AnnoyIndexMultiThreadedBuildPol
 
 
 - (NSArray<NSNumber*>*)test_uiimagetomat:(UIImage*)image {
-
+    torch::autograd::AutoGradMode guard(false);
+    at::AutoNonVariableTypeMode non_var_type_mode(true);
     CGColorSpaceRef colorSpace = CGImageGetColorSpace(image.CGImage);
     CGFloat cols = image.size.width;
     CGFloat rows = image.size.height;
@@ -266,9 +267,9 @@ AnnoyIndex<int, float, DotProduct, Kiss32Random, AnnoyIndexMultiThreadedBuildPol
                                                    kCGBitmapByteOrderDefault); // Bitmap info flags
     CGContextDrawImage(contextRef, CGRectMake(0, 0, cols, rows), image.CGImage);
     CGContextRelease(contextRef);
-    cv::Mat read_img = cvMat;
-    cv::Mat input_img;
-    cv::cvtColor(read_img, input_img, cv::COLOR_BGR2RGB);
+    cv::Mat input_img = cvMat;
+//    cv::Mat input_img;
+    cv::cvtColor(input_img, input_img, cv::COLOR_BGR2RGB);
     cv::resize(input_img, input_img, cv::Size(224, 224), 0, 0, cv::INTER_CUBIC);
     // to tensor
     torch::Tensor tensor_image = torch::from_blob(input_img.data, {1, input_img.rows, input_img.cols, 3}, at::kByte);
@@ -279,8 +280,7 @@ AnnoyIndex<int, float, DotProduct, Kiss32Random, AnnoyIndexMultiThreadedBuildPol
     tensor_image[0][0] = tensor_image[0][0].sub_(mean_[0]).div_(std_[0]);
     tensor_image[0][1] = tensor_image[0][1].sub_(mean_[1]).div_(std_[1]);
     tensor_image[0][2] = tensor_image[0][2].sub_(mean_[2]).div_(std_[2]);
-    torch::autograd::AutoGradMode guard(false);
-    at::AutoNonVariableTypeMode non_var_type_mode(true);
+
     auto outputTensor = _impl.forward({tensor_image}).toTensor();
     float* floatBuffer = outputTensor.data_ptr<float>();
     if (!floatBuffer) {
