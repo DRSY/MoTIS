@@ -213,18 +213,22 @@ extension GalleryInteractor: GalleryInteractorInput {
 //                var encoder = CerealEncoder()
                 let imageSize = CGSize(width: 224,height: 224)
                 let options = PHImageRequestOptions()
+                let imageManager_ = PHImageManager.default()
                 options.deliveryMode = .highQualityFormat
                 options.isSynchronous = true
                 var image_vectors: Array<Array<Float>> = []
-                    self.assetResults.enumerateObjects{ [self](object: AnyObject, count: Int, stop: UnsafeMutablePointer<ObjCBool>) in
-                        if object is PHAsset {
-                            let asset = object as! PHAsset
-                            imageManager.requestImage(for: asset, targetSize: imageSize, contentMode: PHImageContentMode.aspectFit, options: options, resultHandler: { (image: UIImage?, info:[AnyHashable:Any]?) in
-                                image_vectors.append(self.CLIPImagemodule!.test_uiimagetomat(image: image!) as! Array<Float>)
-//                                self.IndexModule?.buildIndexOne(data: (self.CLIPImagemodule?.test_uiimagetomat(image: image!))!)
+                self.assetResults.enumerateObjects{ [self](object: AnyObject, count: Int, stop: UnsafeMutablePointer<ObjCBool>) in
+                    if object is PHAsset {
+                        let asset = object as! PHAsset
+                        autoreleasepool {
+                            imageManager_.requestImage(for: asset, targetSize: imageSize, contentMode: PHImageContentMode.aspectFit, options: options, resultHandler: { (image: UIImage?, _) in
+                                    image_vectors.append(self.CLIPImagemodule!.test_uiimagetomat(image: image!) as! Array<Float>)
+    //                                self.IndexModule?.buildIndexOne(data: (self.CLIPImagemodule?.test_uiimagetomat(image: image!))!)
+    //                                self.CLIPImagemodule?.test_uiimagetomat(image: image!)
                             })
                         }
                     }
+                }
                 self.IndexModule?.buildIndex(datas: image_vectors as! [[NSNumber]])
 //                self.IndexModule?.save()
 //                let vec = self.localImages.map{
