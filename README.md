@@ -3,7 +3,7 @@ A minimal demo demonstrating semantic multimodal text-to-image search using pret
 
 # Recent Updates:
 + Transplanted Spotify's [Annoy](https://github.com/spotify/annoy) Approximate Nearest Neighbor search in this project(annoylib.h).
-+ A distilled ViT image encoder is provided [here](https://drive.google.com/file/d/1Miocgk0gxAf79pu51IX8kfR04iJM_TCm/view?usp=sharing), with a much smaller size of 48MB compared to the original 351MB one while retaining decent retrieval performance. For knowledge distillation, we use Google the union of Google Conceptual Captions and MS COCO as paired image-caption data. The distillation objective is to minimize the KL divergence(w.r.t teacher model's output log-probability dis) and cross entropy loss(w.r.t groud truth).
++ A distilled ViT image encoder is provided [here](https://drive.google.com/file/d/1Miocgk0gxAf79pu51IX8kfR04iJM_TCm/view?usp=sharing), with a much smaller size of 48MB compared to the original 351MB one while retaining decent retrieval performance. For knowledge distillation, we use the union of Google Conceptual Captions and MS COCO as paired image-caption data. The distillation objective is to minimize the KL divergence(w.r.t teacher model's output log-probability dis) and cross entropy loss(w.r.t groud truth).
 + Relatively low quality images are displayed by default. Retrieved images are displayed with high quality. This is designed to reduce the runtime memory.
 
 # Features
