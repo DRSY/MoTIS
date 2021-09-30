@@ -1,5 +1,5 @@
 # Mobile Text-to-Image Search(MoTIS)
-A minimal demo demonstrating semantic multimodal text-to-image search using pretrained vision-language models. Semantic search represents each sample(text and image) as a vector in a shared semantic embedding space. The relevance score can then be measured as similarity(cosine similarity or distance) between vectors.
+MoTIS is a minimal demo demonstrating semantic multimodal text-to-image search using pretrained vision-language models. Semantic search represents each sample(text and image) as a vector in a shared semantic embedding space. The relevance score can then be measured as similarity(cosine similarity or distance) between vectors.
 
 # Recent Updates:
 + A higher-performance and smaller(22MB vs the previous 48MB) image encoder will be provided soon. This image encoder is initialized with [DeiT-tiny](https://github.com/facebookresearch/deit)'s pre-trained weights, which leads to more robust image representation hence better retrieval performance.
