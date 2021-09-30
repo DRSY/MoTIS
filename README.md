@@ -1,4 +1,4 @@
-# Mobile Text-to-Image Search(MTIS)
+# Mobile Text-to-Image Search(MoTIS)
 A minimal demo demonstrating semantic multimodal text-to-image search using pretrained vision-language models. Semantic search represents each sample(text and image) as a vector in a shared semantic embedding space. The relevance score can then be measured as similarity(cosine similarity or distance) between vectors.
 
 # Recent Updates:
