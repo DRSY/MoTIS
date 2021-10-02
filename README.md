@@ -7,6 +7,8 @@ MoTIS is a minimal demo demonstrating semantic multimodal text-to-image search u
 | original CLIP(336MB) | https://drive.google.com/file/d/1K2wIyTuSWLTKBXzUlyTEsa4xXLNDuI7P/view?usp=sharing | 58.6 | 
 | Deit-small-distilled-patch16-224(84MB)  | https://drive.google.com/file/d/1Fg3ckUUqBs5n4jvNWZUcwwk7db0QBRri/view?usp=sharing |  62.1 |
 | ViT-small-patch16-224(85MB)  | https://drive.google.com/file/d/1s_oX0-HIELpjjrBXsjlofIbTGZ_Wllo0/view?usp=sharing | 63.8 |
+| ViT-small-patch16-224(train with larger batch size)  | https://drive.google.com/file/d/1h_w9msJMB4F-dR6uNwp-BHeguS5QIrnE/view?usp=sharing | 64.7 |
+
 
 Note that these ckpts are not ckpt from state_dict(), but rather the ckpt after torch.jit.script operation. The same original CLIP text encoder is used for all various image encoders.
 
