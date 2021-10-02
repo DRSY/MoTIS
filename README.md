@@ -3,7 +3,7 @@ MoTIS is a minimal demo demonstrating semantic multimodal text-to-image search u
 
 # Distilled Image Encoder Checkpoints
 |  Model   | url  | Hit@10 on MSCOCO 2017  |
-|  ----  | ----  |
+|  ----  | ----  | ----  |
 | original CLIP(336MB) | https://drive.google.com/file/d/1K2wIyTuSWLTKBXzUlyTEsa4xXLNDuI7P/view?usp=sharing | 58.6 | 
 | Deit-small-distilled-patch16-224(84MB)  | https://drive.google.com/file/d/1Fg3ckUUqBs5n4jvNWZUcwwk7db0QBRri/view?usp=sharing |  62.1 |
 | ViT-small-patch16-224(85MB)  | https://drive.google.com/file/d/1s_oX0-HIELpjjrBXsjlofIbTGZ_Wllo0/view?usp=sharing | 63.8 |
