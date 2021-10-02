@@ -2,13 +2,13 @@
 MoTIS is a minimal demo demonstrating semantic multimodal text-to-image search using pretrained vision-language models. Semantic search represents each sample(text and image) as a vector in a shared semantic embedding space. The relevance score can then be measured as similarity(cosine similarity or distance) between vectors.
 
 # Distilled Image Encoder Checkpoints
-|  Model   | url  |
+|  Model   | url  | Hit@10 on MSCOCO 2017  |
 |  ----  | ----  |
-| original CLIP(336MB) | https://drive.google.com/file/d/1K2wIyTuSWLTKBXzUlyTEsa4xXLNDuI7P/view?usp=sharing |
-| Deit-small-distilled-patch16-224(84MB)  | https://drive.google.com/file/d/1Fg3ckUUqBs5n4jvNWZUcwwk7db0QBRri/view?usp=sharing |
-| ViT-small-patch16-224(85MB)  | https://drive.google.com/file/d/1s_oX0-HIELpjjrBXsjlofIbTGZ_Wllo0/view?usp=sharing |
+| original CLIP(336MB) | https://drive.google.com/file/d/1K2wIyTuSWLTKBXzUlyTEsa4xXLNDuI7P/view?usp=sharing | 58.6 | 
+| Deit-small-distilled-patch16-224(84MB)  | https://drive.google.com/file/d/1Fg3ckUUqBs5n4jvNWZUcwwk7db0QBRri/view?usp=sharing |  62.1 |
+| ViT-small-patch16-224(85MB)  | https://drive.google.com/file/d/1s_oX0-HIELpjjrBXsjlofIbTGZ_Wllo0/view?usp=sharing | 63.8 |
 
-Note that these ckpts are not ckpt for state_dict(), but rather the ckpt after torch.jit.script operation. The same original CLIP text encoder is used for all various image encoders.
+Note that these ckpts are not ckpt from state_dict(), but rather the ckpt after torch.jit.script operation. The same original CLIP text encoder is used for all various image encoders.
 
 # Recent Updates:
 + We use pretrained ViT-Small(85MB) as initialization for the student model. Using the same distillation pipeline, it achieves even better results(2 points higher Hit@1) than the previous Deit-small-distilled model. Link of the jit scirpt checkpoint is [here](https://drive.google.com/file/d/1s_oX0-HIELpjjrBXsjlofIbTGZ_Wllo0/view?usp=sharing).
