@@ -5,6 +5,7 @@ MoTIS is a minimal demo demonstrating semantic multimodal text-to-image search u
 |  Model   |  Size  |  Google Drive  | R@10 on MS COCO2014 5K testset  |
 |  ----  | ----  | ----  | ----  |
 | original CLIP |  336MB   | https://drive.google.com/file/d/1K2wIyTuSWLTKBXzUlyTEsa4xXLNDuI7P/view?usp=sharing | 64.5 | 
+| fine-tuned CLIP |  336MB   | - | 73.3 | 
 | ViT-small-patch16-224  |   85MB    |   https://drive.google.com/file/d/1s_oX0-HIELpjjrBXsjlofIbTGZ_Wllo0/view?usp=sharing | 68.9 |
 | ViT-small-patch16-224(larger batch size)  |  85MB   |   https://drive.google.com/file/d/1h_w9msJMB4F-dR6uNwp-BHeguS5QIrnE/view?usp=sharing | 68.3 |
 | ViT-small-patch16-224(arger batch size and hard negatives sampled from training set)  |  85MB  |       https://drive.google.com/file/d/14AqCaORjxePrscdwUTGprII8siJ7ik8X/view?usp=sharing | 69.4 |
