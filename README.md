@@ -10,14 +10,14 @@ MoTIS is a minimal demo demonstrating semantic multimodal text-to-image search u
 
 # Current Best Bi-Encoder
 + Image Encoder, 85MB: https://drive.google.com/file/d/1Whacd4qeFuP_sair3yNGUeQTm4bshDYh/view?usp=sharing
-+ Text Encoder, 170MB: https://drive.google.com/file/d/1EsA0LZMuNbDQMp8jwAHGl5xM-q1ivnKV/view?usp=sharing
++ Text Encoder, 170MB: https://drive.google.com/file/d/1V4_oJGZiW-J6fqkvRKsmtPae-S32-hfJ/view?usp=sharing
 
 # Distilled Text Encoder Checkpoints
 |  Model   |  Size  |  Google Drive  | R@10 on MS COCO2014 5K testset  |
 |  ----  | ----  | ----  | ----  |
 | original CLIP |  224MB   | https://drive.google.com/file/d/1583IT_K9cCkeHfrmuTpMbImbS5qB8SA1/view?usp=sharing | 64.5 | 
 | fine-tuned CLIP |  224MB   | - | 73.3 | 
-| 6-Layer Transformer |  170MB   | https://drive.google.com/file/d/1le2n2ReqkPsggBxwFpkr0c8gu9OTNjD5/view?usp=sharing | 72.2 | 
+| 6-Layer Transformer |  170MB   | https://drive.google.com/file/d/1V4_oJGZiW-J6fqkvRKsmtPae-S32-hfJ/view?usp=sharing | 72.2 | 
 
 # Distilled Image Encoder Checkpoints
 |  Model   |  Size  |  Google Drive  | R@10 on MS COCO2014 5K testset  |
