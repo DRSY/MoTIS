@@ -8,7 +8,7 @@ MoTIS is a minimal demo demonstrating semantic multimodal text-to-image search u
 + Transplanted Spotify's [Annoy](https://github.com/spotify/annoy) Approximate Nearest Neighbor search in this project(annoylib.h).
 + Relatively low quality images are displayed by default. Retrieved images are displayed with high quality. This is designed to reduce the runtime memory.
 
-# Current Best Bi-Encoder
+# Current Best Bi-Encoder TorchScript Files
 + Image Encoder, 85MB: https://drive.google.com/file/d/1Whacd4qeFuP_sair3yNGUeQTm4bshDYh/view?usp=sharing
 + Text Encoder, 170MB: https://drive.google.com/file/d/1V4_oJGZiW-J6fqkvRKsmtPae-S32-hfJ/view?usp=sharing
 
