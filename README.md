@@ -1,6 +1,17 @@
 # Mobile Text-to-Image Search(MoTIS)
 MoTIS is a minimal demo demonstrating semantic multimodal text-to-image search using pretrained vision-language models. Semantic search represents each sample(text and image) as a vector in a shared semantic embedding space. The relevance score can then be measured as similarity(cosine similarity or distance) between vectors.
 
+# Current Best Bi-Encoder
++ Image Encoder, 85MB: https://drive.google.com/file/d/1Whacd4qeFuP_sair3yNGUeQTm4bshDYh/view?usp=sharing
++ Text Encoder, 170MB: https://drive.google.com/file/d/1le2n2ReqkPsggBxwFpkr0c8gu9OTNjD5/view?usp=sharing
+
+# Distilled Text Encoder Checkpoints
+|  Model   |  Size  |  Google Drive  | R@10 on MS COCO2014 5K testset  |
+|  ----  | ----  | ----  | ----  |
+| original CLIP |  224MB   | https://drive.google.com/file/d/1583IT_K9cCkeHfrmuTpMbImbS5qB8SA1/view?usp=sharing | 64.5 | 
+| fine-tuned CLIP |  224MB   | - | 73.3 | 
+| 6-Layer Transformer |  170MB   | https://drive.google.com/file/d/1le2n2ReqkPsggBxwFpkr0c8gu9OTNjD5/view?usp=sharing | 72.2 | 
+
 # Distilled Image Encoder Checkpoints
 |  Model   |  Size  |  Google Drive  | R@10 on MS COCO2014 5K testset  |
 |  ----  | ----  | ----  | ----  |
@@ -11,7 +22,6 @@ MoTIS is a minimal demo demonstrating semantic multimodal text-to-image search u
 | ViT-small-patch16-224(arger batch size and hard negatives sampled from training set)  |  85MB  |       https://drive.google.com/file/d/14AqCaORjxePrscdwUTGprII8siJ7ik8X/view?usp=sharing | 69.4 |
 | ViT-small-patch16-224(larger batch size, bigger image corpus, and hard negatives sampled from training set)  |  85MB  |  https://drive.google.com/file/d/1q3dllreyVTofWh5JZywzWYHQlNgcRacq/view?usp=sharing  | 69.9 |
 | ViT-small-patch16-224-ImageNet21K(larger batch size, bigger image corpus, and hard negatives sampled from training set) |  85MB  |  https://drive.google.com/file/d/1Whacd4qeFuP_sair3yNGUeQTm4bshDYh/view?usp=sharing | 71.4 |
-
 
 Note that these checkpoints are not taken from state_dict(), but rather after torch.jit.script operation. The same original CLIP text encoder is used for all above image encoders.
 
