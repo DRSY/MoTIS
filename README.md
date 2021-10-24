@@ -10,8 +10,8 @@ MoTIS is a minimal demo demonstrating semantic multimodal text-to-image search u
 + Relatively low quality images are displayed by default. Retrieved images are displayed with high quality. This is designed to reduce the runtime memory.
 
 # Current Best Bi-Encoder TorchScript Files
-+ Image Encoder, 85MB: https://drive.google.com/file/d/1Whacd4qeFuP_sair3yNGUeQTm4bshDYh/view?usp=sharing
-+ Text Encoder, 170MB: https://drive.google.com/file/d/1V4_oJGZiW-J6fqkvRKsmtPae-S32-hfJ/view?usp=sharing
++ Image Encoder, 85MB disk space: https://drive.google.com/file/d/1Whacd4qeFuP_sair3yNGUeQTm4bshDYh/view?usp=sharing
++ Text Encoder, 170MB disk space: https://drive.google.com/file/d/1V4_oJGZiW-J6fqkvRKsmtPae-S32-hfJ/view?usp=sharing
 
 # Distilled Text Encoder Checkpoints
 |  Model   |  Size  |  Google Drive  | R@10 on MS COCO2014 5K testset  |
