@@ -14,7 +14,7 @@ MoTIS is a minimal demo demonstrating semantic multimodal text-to-image search u
 + Text Encoder, 170MB disk space: https://drive.google.com/file/d/1V4_oJGZiW-J6fqkvRKsmtPae-S32-hfJ/view?usp=sharing
 
 # Distilled Text Encoder Checkpoints
-|  Model   |  Size  |  Google Drive  | R@10 on MS COCO2014 5K testset  |
+|  Model   |  Disk Space  |  Google Drive  | R@10 on MS COCO2014 5K testset  |
 |  ----  | ----  | ----  | ----  |
 | original CLIP |  224MB   | https://drive.google.com/file/d/1583IT_K9cCkeHfrmuTpMbImbS5qB8SA1/view?usp=sharing | 64.5 | 
 | fine-tuned CLIP |  224MB   | - | 73.3 | 
@@ -22,7 +22,7 @@ MoTIS is a minimal demo demonstrating semantic multimodal text-to-image search u
 | 4-Layer Transformer |  146MB   | https://drive.google.com/file/d/1S125Z49P-1ROiRPOa9NkbDmObrVelXOW/view?usp=sharing | 71.8 | 
 
 # Distilled Image Encoder Checkpoints
-|  Model   |  Size  |  Google Drive  | R@10 on MS COCO2014 5K testset  |
+|  Model   |  Disk Space  |  Google Drive  | R@10 on MS COCO2014 5K testset  |
 |  ----  | ----  | ----  | ----  |
 | original CLIP |  336MB   | https://drive.google.com/file/d/1K2wIyTuSWLTKBXzUlyTEsa4xXLNDuI7P/view?usp=sharing | 64.5 | 
 | fine-tuned CLIP |  336MB   | - | 73.3 | 
