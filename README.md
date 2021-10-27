@@ -11,9 +11,9 @@ MoTIS is a minimal demo demonstrating semantic multimodal text-to-image search u
 
 # Current Best Bi-Encoder TorchScript Files
 + Image Encoder, 85MB disk space, 12 layer, 384 dim 6 heads: https://drive.google.com/file/d/1Tz9wE-hzM2f6ONCbY4lpHiWSoOyoq1TQ/view?usp=sharing
-+ Text Encoder, 170MB disk space, 6 layer, 512 dim, 8 heads: https://drive.google.com/file/d/1isMy64zuWnggd9K63RMHG4fx6U4O-izE/view?usp=sharing
++ Text Encoder, 170MB disk space, 4 layer, 512 dim, 8 heads: https://drive.google.com/file/d/1c83gD8NGT8v8RcE_E_rCrkqWN2RIzHEg/view?usp=sharing
  
-**Performance:** These two combined achieves 36.4/64.3/74.9 R@1/R@5/R@10 on MS COCO 2014 5K test set, outperforming CLIP model(35.0/62.1/73.3) finetuned with contrastive loss. On the 1K test split, our current best compressed bi-encoder achieves 57.2/85.5/93.0 R@1/R@5/R@10, while CLIP obtains 55.6/84.8/92.8.
+**Performance:** These two combined achieves 36.6/64.2/74.9 R@1/R@5/R@10 on MS COCO 2014 5K test set, outperforming CLIP model(35.0/62.1/73.3) finetuned with contrastive loss. On the 1K test split, our current best compressed bi-encoder achieves 57.3/85.5/93.0 R@1/R@5/R@10, while CLIP obtains 55.6/84.8/92.8.
 
 **Inference Speed:** The image encoder is approximately 1.51 times faster than CLIP's ViT/B-32, and the text encoder is about 2 times faster than CLIP's text encoder. 
 
@@ -23,8 +23,9 @@ MoTIS is a minimal demo demonstrating semantic multimodal text-to-image search u
 | original CLIP |  224MB   | https://drive.google.com/file/d/1583IT_K9cCkeHfrmuTpMbImbS5qB8SA1/view?usp=sharing | 64.5 | 
 | fine-tuned CLIP |  224MB   | - | 73.3 | 
 | 6-Layer Transformer |  170MB   | https://drive.google.com/file/d/1V4_oJGZiW-J6fqkvRKsmtPae-S32-hfJ/view?usp=sharing | 72.2 | 
-| 6-Layer Transformer with hard negtives |  170MB   | https://drive.google.com/file/d/1isMy64zuWnggd9K63RMHG4fx6U4O-izE/view?usp=sharing | 74.9 | 
+| 6-Layer Transformer with hard negatives |  170MB   | https://drive.google.com/file/d/1isMy64zuWnggd9K63RMHG4fx6U4O-izE/view?usp=sharing | 74.9 | 
 | 4-Layer Transformer |  146MB   | https://drive.google.com/file/d/1S125Z49P-1ROiRPOa9NkbDmObrVelXOW/view?usp=sharing | 71.8 | 
+| 4-Layer Transformer with hard negatives |  146MB   | https://drive.google.com/file/d/1c83gD8NGT8v8RcE_E_rCrkqWN2RIzHEg/view?usp=sharing | 74.9 | 
 
 # Distilled Image Encoder Checkpoints
 |  Model   |  Disk Space  |  Google Drive  | R@10 on MS COCO2014 5K testset  |
