@@ -11,7 +11,7 @@ MoTIS is a minimal demo demonstrating semantic multimodal text-to-image search u
 
 # Current Best Bi-Encoder TorchScript Files
 + Image Encoder, 85MB disk space, 12 layer, 384 dim 6 heads: https://drive.google.com/file/d/1Whacd4qeFuP_sair3yNGUeQTm4bshDYh/view?usp=sharing
-+ Text Encoder, 170MB disk space, 6 layer, 512 dim, 8 heads: https://drive.google.com/file/d/1jJvW4BYUXLpaZUhF316CPu8pI0n0Hanl/view?usp=sharing
++ Text Encoder, 170MB disk space, 6 layer, 512 dim, 8 heads: https://drive.google.com/file/d/1isMy64zuWnggd9K63RMHG4fx6U4O-izE/view?usp=sharing
  
 **Performance:** These two combined achieves 36.4/64.3/74.9 R@1/R@5/R@10 on MS COCO 2014 5K test set, outperforming CLIP model(35.0/62.1/73.3) finetuned with contrastive loss. On the 1K test split, our current best compressed bi-encoder achieves 57.2/85.5/93.0 R@1/R@5/R@10, while CLIP obtains 55.6/84.8/92.8.
 
@@ -23,7 +23,7 @@ MoTIS is a minimal demo demonstrating semantic multimodal text-to-image search u
 | original CLIP |  224MB   | https://drive.google.com/file/d/1583IT_K9cCkeHfrmuTpMbImbS5qB8SA1/view?usp=sharing | 64.5 | 
 | fine-tuned CLIP |  224MB   | - | 73.3 | 
 | 6-Layer Transformer |  170MB   | https://drive.google.com/file/d/1V4_oJGZiW-J6fqkvRKsmtPae-S32-hfJ/view?usp=sharing | 72.2 | 
-| 6-Layer Transformer with hard negtives |  170MB   | https://drive.google.com/file/d/1jJvW4BYUXLpaZUhF316CPu8pI0n0Hanl/view?usp=sharing | 74.9 | 
+| 6-Layer Transformer with hard negtives |  170MB   | https://drive.google.com/file/d/1isMy64zuWnggd9K63RMHG4fx6U4O-izE/view?usp=sharing | 74.9 | 
 | 4-Layer Transformer |  146MB   | https://drive.google.com/file/d/1S125Z49P-1ROiRPOa9NkbDmObrVelXOW/view?usp=sharing | 71.8 | 
 
 # Distilled Image Encoder Checkpoints
