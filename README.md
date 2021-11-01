@@ -11,7 +11,7 @@ MoTIS is a minimal demo demonstrating semantic multimodal text-to-image search u
 
 # Current Best Bi-Encoder TorchScript Files
 + Image Encoder, 85MB disk space, 12 layer, 384 dim 6 heads: https://drive.google.com/file/d/194tnzP0_6pB5XAFrL6QO2dQ5mWvhSF0r/view?usp=sharing
-+ Text Encoder, 170MB disk space, 4 layer, 512 dim, 8 heads: https://drive.google.com/file/d/1c83gD8NGT8v8RcE_E_rCrkqWN2RIzHEg/view?usp=sharing
++ Text Encoder, 146MB disk space, 4 layer, 512 dim, 8 heads: https://drive.google.com/file/d/1c83gD8NGT8v8RcE_E_rCrkqWN2RIzHEg/view?usp=sharing
  
 **Performance:** These two combined achieves 36.6/64.2/74.9 R@1/R@5/R@10 on MS COCO 2014 5K test set, outperforming CLIP model(35.0/62.1/73.3) finetuned with contrastive loss. On the 1K test split, our current best compressed bi-encoder achieves 57.3/85.5/93.0 R@1/R@5/R@10, while CLIP obtains 55.6/84.8/92.8.
 
