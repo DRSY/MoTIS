@@ -2,6 +2,7 @@
 MoTIS is a minimal demo demonstrating semantic multimodal text-to-image search using pretrained vision-language models. Semantic search represents each sample(text and image) as a vector in a shared semantic embedding space. The relevance score can then be measured as similarity(cosine similarity or distance) between vectors.
 
 # Recent Updates:
++ Android version is coming soon.
 + 4-layer text encoder is released.
 + We distilled the text encoder into a 6-layer counterpart of the original 12-layer Transformer, the resulting combined bi-encoder achieves even better performance than the one combined using 12-layer Transformer!
 + We use pretrained ViT-Small(85MB) as initialization for the student model. Using the same distillation pipeline, it achieves even better results(2 points higher Hit@1) than the previous Deit-small-distilled model. Link of the jit scirpt checkpoint is [here](https://drive.google.com/file/d/1s_oX0-HIELpjjrBXsjlofIbTGZ_Wllo0/view?usp=sharing).
