@@ -14,7 +14,7 @@ MoTIS is a minimal demo demonstrating semantic multimodal text-to-image search u
 + Image Encoder, 85MB disk space, 12 layer, 384 dim 6 heads: https://drive.google.com/file/d/194tnzP0_6pB5XAFrL6QO2dQ5mWvhSF0r/view?usp=sharing
 + Text Encoder, 146MB disk space, 4 layer, 512 dim, 8 heads: https://drive.google.com/file/d/1c83gD8NGT8v8RcE_E_rCrkqWN2RIzHEg/view?usp=sharing
  
-**Performance:** These two combined achieves 39.0/67.2/77.4 R@1/R@5/R@10 on MS COCO 2014 5K test set, outperforming CLIP model(35.0/62.1/73.3) finetuned with contrastive loss. On the 1K test split, our current best compressed bi-encoder achieves 60.4/87.3/94.0 R@1/R@5/R@10, while CLIP obtains 55.6/84.8/92.8.
+**Performance:** These two combined achieves 40.0/67.6/77.8 R@1/R@5/R@10 on MS COCO 2014 5K test set, matching CLIP model(40.9/67.6/77.9) finetuned with contrastive loss. On the 1K test split, our current best compressed bi-encoder achieves 60.6/87.4/94.0 R@1/R@5/R@10, while CLIP obtains 61.0/87.9/94.7.
 
 **Inference Speed:** The image encoder is approximately 1.6 times faster than CLIP's ViT/B-32, and the text encoder is about 2.9 times faster than CLIP's text encoder. 
 
