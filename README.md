@@ -4,17 +4,17 @@ MoTIS is a minimal demo demonstrating semantic multimodal text-to-image search u
 # Recent Updates:
 + Android version is coming soon.
 + 4-layer text encoder is released.
-+ We distilled the text encoder into a 6-layer counterpart of the original 12-layer Transformer, the resulting combined bi-encoder achieves even better performance than the one combined using 12-layer Transformer!
++ We distilled the text encoder into a 6-layer counterpart of the original 12-layer Transformer, the resulting combined dual-encoder achieves even better performance than the one combined using 12-layer Transformer!
 + We use pretrained ViT-Small(85MB) as initialization for the student model. Using the same distillation pipeline, it achieves even better results(2 points higher Hit@1) than the previous Deit-small-distilled model. Link of the jit scirpt checkpoint is [here](https://drive.google.com/file/d/1s_oX0-HIELpjjrBXsjlofIbTGZ_Wllo0/view?usp=sharing).
 + A more effective distilled image encoder(84MB compared to the original 350MB ViT-B/32 in CLIP) is available [here](https://drive.google.com/file/d/1Fg3ckUUqBs5n4jvNWZUcwwk7db0QBRri/view?usp=sharing). This image encoder is initialized with [DeiT-base-distilled](https://github.com/facebookresearch/deit)'s pre-trained weights, which leads to more robust image representation hence better retrieval performance(obtain higher Hit@1/5/10 than original CLIP on MSCOCO validation set). It is further learned through supervised learning and knowledge distillation.
 + Transplanted Spotify's [Annoy](https://github.com/spotify/annoy) Approximate Nearest Neighbor search in this project(annoylib.h).
 + Before searching, all images in the gallery are displayed at relatively lower resolution to save memory. Meanwhile in the background, we take as input the high-resolution version of all images for encoding and indexing. When users actually start to search, the retrieved images are displayed at high resolution since we only display top-K search results.
 
-# Current Best Bi-Encoder TorchScript Files
+# Current Best Dual-Encoder TorchScript Files
 + Image Encoder, 85MB disk space, 12 layer, 384 dim 6 heads: https://drive.google.com/file/d/194tnzP0_6pB5XAFrL6QO2dQ5mWvhSF0r/view?usp=sharing
 + Text Encoder, 146MB disk space, 4 layer, 512 dim, 8 heads: https://drive.google.com/file/d/1c83gD8NGT8v8RcE_E_rCrkqWN2RIzHEg/view?usp=sharing
  
-**Performance:** These two combined achieves 40.4/68.5/78.4 R@1/R@5/R@10 on MS COCO 2014 5K test set, matching CLIP model(40.9/67.6/77.9) finetuned with contrastive loss. On the 1K test split, our current best compressed bi-encoder achieves 61.2/87.6/94.2 R@1/R@5/R@10, while CLIP obtains 61.0/87.9/94.7.
+**Performance:** These two combined achieves 40.4/68.5/78.4 R@1/R@5/R@10 on MS COCO 2014 5K test set, matching CLIP model(40.9/67.6/77.9) finetuned with contrastive loss. On the 1K test split, our current best compressed dual-encoder achieves 61.2/87.6/94.2 R@1/R@5/R@10, while CLIP obtains 61.0/87.9/94.7.
 
 **Inference Speed:** The image encoder is approximately 1.6 times faster than CLIP's ViT/B-32, and the text encoder is about 2.9 times faster than CLIP's text encoder. 
 
