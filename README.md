@@ -22,22 +22,22 @@ MoTIS is a minimal demo demonstrating semantic multimodal text-to-image search u
 |  Model   |  Disk Space  |  Google Drive  | R@10 on MS COCO2014 5K testset  |
 |  ----  | ----  | ----  | ----  |
 | original CLIP |  224MB   | https://drive.google.com/file/d/1583IT_K9cCkeHfrmuTpMbImbS5qB8SA1/view?usp=sharing | 64.5 | 
-| fine-tuned CLIP |  224MB   | - | 73.3 | 
-| 6-Layer Transformer |  170MB   | https://drive.google.com/file/d/1V4_oJGZiW-J6fqkvRKsmtPae-S32-hfJ/view?usp=sharing | 72.2 | 
-| 6-Layer Transformer with hard negatives |  170MB   | https://drive.google.com/file/d/1isMy64zuWnggd9K63RMHG4fx6U4O-izE/view?usp=sharing | 77.4 | 
-| 4-Layer Transformer |  146MB   | https://drive.google.com/file/d/1S125Z49P-1ROiRPOa9NkbDmObrVelXOW/view?usp=sharing | 71.8 | 
-| 4-Layer Transformer with hard negatives |  146MB   | https://drive.google.com/file/d/1c83gD8NGT8v8RcE_E_rCrkqWN2RIzHEg/view?usp=sharing | 77.6 | 
+| fine-tuned CLIP |  224MB   | - | 77.9 | 
+| 6-Layer Transformer |  170MB   | https://drive.google.com/file/d/1V4_oJGZiW-J6fqkvRKsmtPae-S32-hfJ/view?usp=sharing | 74.2 | 
+| 6-Layer Transformer with hard negatives |  170MB   | https://drive.google.com/file/d/1isMy64zuWnggd9K63RMHG4fx6U4O-izE/view?usp=sharing | 79.1 | 
+| 4-Layer Transformer |  146MB   | https://drive.google.com/file/d/1S125Z49P-1ROiRPOa9NkbDmObrVelXOW/view?usp=sharing | 73.8 | 
+| 4-Layer Transformer with hard negatives |  146MB   | https://drive.google.com/file/d/1c83gD8NGT8v8RcE_E_rCrkqWN2RIzHEg/view?usp=sharing | 78.4 | 
 
 # Distilled Image Encoder Checkpoints
 |  Model   |  Disk Space  |  Google Drive  | R@10 on MS COCO2014 5K testset  |
 |  ----  | ----  | ----  | ----  |
 | original CLIP |  336MB   | https://drive.google.com/file/d/1K2wIyTuSWLTKBXzUlyTEsa4xXLNDuI7P/view?usp=sharing | 64.5 | 
-| fine-tuned CLIP |  336MB   | - | 73.3 | 
+| fine-tuned CLIP |  336MB   | - | 77.9 | 
 | ViT-small-patch16-224  |   85MB    |   https://drive.google.com/file/d/1s_oX0-HIELpjjrBXsjlofIbTGZ_Wllo0/view?usp=sharing | 68.9 |
 | ViT-small-patch16-224(larger batch size)  |  85MB   |   https://drive.google.com/file/d/1h_w9msJMB4F-dR6uNwp-BHeguS5QIrnE/view?usp=sharing | 68.3 |
 | ViT-small-patch16-224(arger batch size and hard negatives sampled from training set)  |  85MB  |       https://drive.google.com/file/d/14AqCaORjxePrscdwUTGprII8siJ7ik8X/view?usp=sharing | 69.4 |
 | ViT-small-patch16-224(larger batch size, bigger image corpus, and hard negatives sampled from training set)  |  85MB  |  https://drive.google.com/file/d/1q3dllreyVTofWh5JZywzWYHQlNgcRacq/view?usp=sharing  | 69.9 |
-| ViT-small-patch16-224-ImageNet21K(larger batch size, bigger image corpus, and hard negatives sampled from training set) |  85MB  |  https://drive.google.com/file/d/1Whacd4qeFuP_sair3yNGUeQTm4bshDYh/view?usp=sharing | 73.4 |
+| ViT-small-patch16-224-ImageNet21K(larger batch size, bigger image corpus, and hard negatives sampled from training set) |  85MB  |  https://drive.google.com/file/d/1Whacd4qeFuP_sair3yNGUeQTm4bshDYh/view?usp=sharing | 75.3 |
 
 Note that these checkpoints are not taken from state_dict(), but rather after torch.jit.script operation. The same original CLIP text encoder is used for all above image encoders.
 
