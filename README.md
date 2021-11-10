@@ -46,8 +46,8 @@ Note that these checkpoints are not taken from state_dict(), but rather after to
 2. support different vector indexing strategies(linear scan, KMeans, and random projection).
 
 # Screenshot
-+ All images in the gallery ![all](./all.png) 
-+ Search with query **Three cats** ![search](./cats.png)
++ Before search, all images in the gallery(left) => After searching with query **Three cats**(right): 
++ <img src="all.png" width=300px height=600px>  <img src="cats.png" width=300px height=600px>
 
 # Installation
 1. Download the two TorchScript model files([text encoder](https://drive.google.com/file/d/1c83gD8NGT8v8RcE_E_rCrkqWN2RIzHEg/view?usp=sharing), [image encoder](https://drive.google.com/file/d/194tnzP0_6pB5XAFrL6QO2dQ5mWvhSF0r/view?usp=sharing)) into models folder and add them into the Xcode project.
