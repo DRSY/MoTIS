@@ -47,6 +47,7 @@ Note that these checkpoints are not taken from state_dict(), but rather after to
 
 # Screenshot
 + Before search, all images in the gallery(left)&ensp;&ensp;=>&ensp;&ensp;&ensp;&ensp;After searching with query **Three cats**(right): 
+
 <img src="all.png" width=300px height=600px> &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;  <img src="cats.png" width=300px height=600px>
 
 # Installation
