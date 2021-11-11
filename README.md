@@ -47,7 +47,7 @@ Note that these checkpoints are not taken from state_dict(), but rather after to
 
 # Screenshot
 + Before search, all images in the gallery(left)&ensp;&ensp;=>&ensp;&ensp;&ensp;&ensp;After searching with query **Three cats**(right): 
-+ <img src="all.png" width=300px height=600px> &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;  <img src="cats.png" width=300px height=600px>
++ <img src="./all.png" width=300px height=600px> &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;  <img src="./cats.png" width=300px height=600px>
 
 # Installation
 1. Download the two TorchScript model files([text encoder](https://drive.google.com/file/d/1c83gD8NGT8v8RcE_E_rCrkqWN2RIzHEg/view?usp=sharing), [image encoder](https://drive.google.com/file/d/194tnzP0_6pB5XAFrL6QO2dQ5mWvhSF0r/view?usp=sharing)) into models folder and add them into the Xcode project.
