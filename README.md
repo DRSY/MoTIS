@@ -2,6 +2,7 @@
 MoTIS is a minimal demo demonstrating semantic multimodal text-to-image search using pretrained vision-language models. Semantic search represents each sample(text and image) as a vector in a shared semantic embedding space. The relevance score can then be measured as similarity(cosine similarity or distance) between vectors.
 
 # Recent Updates:
++ 2-layer text encoder is released.
 + Android version is coming soon.
 + 4-layer text encoder is released.
 + We distilled the text encoder into a 6-layer counterpart of the original 12-layer Transformer, the resulting combined dual-encoder achieves even better performance than the one combined using 12-layer Transformer!
@@ -23,10 +24,9 @@ MoTIS is a minimal demo demonstrating semantic multimodal text-to-image search u
 |  ----  | ----  | ----  | ----  |
 | original CLIP |  224MB   | https://drive.google.com/file/d/1583IT_K9cCkeHfrmuTpMbImbS5qB8SA1/view?usp=sharing | 64.5 | 
 | fine-tuned CLIP |  224MB   | - | 77.9 | 
-| 6-Layer Transformer |  170MB   | https://drive.google.com/file/d/1V4_oJGZiW-J6fqkvRKsmtPae-S32-hfJ/view?usp=sharing | 74.2 | 
-| 6-Layer Transformer with hard negatives |  170MB   | https://drive.google.com/file/d/1isMy64zuWnggd9K63RMHG4fx6U4O-izE/view?usp=sharing | 79.1 | 
-| 4-Layer Transformer |  146MB   | https://drive.google.com/file/d/1S125Z49P-1ROiRPOa9NkbDmObrVelXOW/view?usp=sharing | 73.8 | 
-| 4-Layer Transformer with hard negatives |  146MB   | https://drive.google.com/file/d/1c83gD8NGT8v8RcE_E_rCrkqWN2RIzHEg/view?usp=sharing | 78.4 | 
+| 6-Layer Transformer with hard negatives |  170MB   | https://drive.google.com/file/d/1isMy64zuWnggd9K63RMHG4fx6U4O-izE/view?usp=sharing | 79.4 | 
+| 4-Layer Transformer with hard negatives |  146MB   | https://drive.google.com/file/d/1c83gD8NGT8v8RcE_E_rCrkqWN2RIzHEg/view?usp=sharing | 79.0 | 
+| 2-Layer Transformer with hard negatives |  121MB   | https://drive.google.com/file/d/1QdWJw_29MWQnb9SgClwbM_9iZquB9QKT/view?usp=sharing | 78.4 |
 
 # Distilled Image Encoder Checkpoints
 |  Model   |  Disk Space  |  Google Drive  | R@10 on MS COCO2014 5K testset  |
