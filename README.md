@@ -3,7 +3,7 @@ MoTIS is a minimal demo demonstrating semantic multimodal text-to-image search u
 
 # Recent Updates:
 + The [paper](https://arxiv.org/abs/2204.13913) demonstrating the underlying compression algorithm of MoTIS has been accepted to NAACL 2022 main conference!
-+ Android apk is availabel at [here](https://drive.google.com/file/d/1hKuYYQmhbKaQ-yqJXZY3_dT3o-sHj5O4/view?usp=sharing).
++ Android apk is availabel at [here](https://drive.google.com/file/d/17TNCHeuo9v9_SItYSWab_oiNLnMJv0xq/view?usp=sharing).
 + 2-layer text encoder is released.
 + Android version is coming soon.
 + 4-layer text encoder is released.
